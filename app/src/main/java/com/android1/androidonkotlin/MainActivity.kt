@@ -1,15 +1,11 @@
 package com.android1.androidonkotlin
 
-import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.Button
-import android.widget.TextView
 import com.android1.androidonkotlin.databinding.ActivityMainBinding
 import com.android1.androidonkotlin.domain.WeatherItem
 import com.android1.androidonkotlin.view.WeatherFragment
-import java.util.zip.Inflater
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,10 +17,10 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        if (savedInstanceState==null){
-//            supportFragmentManager.beginTransaction()
-//                .replace(com.google.android.material.R.id.container, WeatherFragment.newInstance()).commit()
-//        }
+        if (savedInstanceState==null){
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.container,  WeatherFragment.newInstance()).commit()
+        }
 
 
 
