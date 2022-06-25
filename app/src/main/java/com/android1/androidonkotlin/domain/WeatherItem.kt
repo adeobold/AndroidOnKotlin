@@ -1,7 +1,5 @@
-package com.android1.androidonkotlin.model
+package com.android1.androidonkotlin.domain
 
-import android.content.pm.PackageManager
-import androidx.core.app.ActivityCompat
 import java.util.*
 
 data class WeatherItem(val city: City = getDefaultCity(), val date: Calendar = Calendar.getInstance(), val temperature: Double = 21.0,
