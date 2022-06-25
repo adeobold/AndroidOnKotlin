@@ -42,7 +42,9 @@ class WeatherFragment : Fragment() {
             is AppState.Error -> {
                 binding.txtCity.text = "Произошла ошибка при загрузке"
             }
-            AppState.Loading -> {/*TODO HW*/}
+            AppState.Loading -> {
+                binding.txtCity.text = "Идет загрузка..."
+            }
             is AppState.Success -> {
                 val result = appState.weatherData
                 binding.txtCity.text = result.city.name
