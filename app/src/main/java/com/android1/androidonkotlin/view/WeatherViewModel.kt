@@ -6,6 +6,7 @@ import com.android1.androidonkotlin.model.Repository
 import com.android1.androidonkotlin.model.RepositoryLocalImpl
 import com.android1.androidonkotlin.model.RepositoryRemoteImpl
 import com.android1.androidonkotlin.viewmodel.AppState
+import com.android1.androidonkotlin.viewmodel.AppState.Error
 
 class WeatherViewModel(private val liveData: MutableLiveData<AppState> = MutableLiveData<AppState>()) :
     ViewModel() {
@@ -28,8 +29,10 @@ class WeatherViewModel(private val liveData: MutableLiveData<AppState> = Mutable
     fun sentRequest() {
         //choiceRepository()
         liveData.value = AppState.Loading
-        if ((0..3).random() == 2) { //FIXME
-            liveData.postValue(AppState.Error(throw IllegalStateException("что-то пошло не так")))
+        if ((0..3).random() == 2) {
+            liveData.postValue(
+                Error(IllegalStateException("что-то пошло не так"))
+            )
         } else {
             liveData.postValue(
                 AppState.Success(
