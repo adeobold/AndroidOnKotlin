@@ -30,8 +30,8 @@ class WeatherViewModel(private val liveData: MutableLiveData<AppState> = Mutable
     fun sentRequest() {
         //choiceRepository()
         liveData.value = AppState.Loading
+
         Thread {
-            sleep(3000)
             if ((0..6).random() == 2) {
                 liveData.postValue(
                     Error(IllegalStateException("что-то пошло не так"))
@@ -53,10 +53,10 @@ class WeatherViewModel(private val liveData: MutableLiveData<AppState> = Mutable
     }
 
     private fun isConnection(): Boolean {
-        return false
+        return true
     }
 
-    override fun onCleared() { // TODO HW ***
+    override fun onCleared() { // TODO HW *** Пока не понял что тут делать
         super.onCleared()
     }
 }
