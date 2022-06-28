@@ -7,13 +7,12 @@ import com.android1.androidonkotlin.domain.getWorldCities
 class RepositoryRemoteImpl : Repository {
 
     override fun getWeather(lat: Double, lon: Double): WeatherItem {
-        Thread.sleep(2000L)
-        return WeatherItem()
+        return WeatherItem() // здесь будет функция загрузки погоды из яндекса
     }
 
     override fun getListWeather(location: Location): List<WeatherItem> {
 
-        var result = mutableListOf<WeatherItem>()
+        val result = mutableListOf<WeatherItem>()
 
         val cities = when (location) {
             Location.Russian -> {
@@ -23,7 +22,7 @@ class RepositoryRemoteImpl : Repository {
                 getWorldCities()
             }
         }
-        for (i in 0..cities.size) {
+        for (i in cities.indices) {
             result.add(getWeather(cities[i].city!!.lat, cities[i].city!!.lon))
         }
         return result

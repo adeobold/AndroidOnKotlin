@@ -12,7 +12,7 @@ import kotlin.random.Random
 
 class WeatherListViewModel(private val liveData: MutableLiveData<AppState> = MutableLiveData<AppState>()) : ViewModel() {
 
-    lateinit var repository: Repository
+    private lateinit var repository: Repository
 
     fun getLiveData(): MutableLiveData<AppState> {
         choiceRepository()
@@ -22,6 +22,7 @@ class WeatherListViewModel(private val liveData: MutableLiveData<AppState> = Mut
     private fun choiceRepository() {
         repository = if (isConnection()) {
             RepositoryRemoteImpl()
+            //RepositoryLocalImpl()
         } else {
             RepositoryLocalImpl()
         }
@@ -34,14 +35,14 @@ class WeatherListViewModel(private val liveData: MutableLiveData<AppState> = Mut
         sentRequest(Location.World)
     }
 
-    fun sentRequest(location: Location) {
+    private fun sentRequest(location: Location) {
 
         liveData.value = AppState.Loading
 
         val rand = Random(System.nanoTime())
 
         Thread {
-            if ((0..6).random(rand) == 2) {
+            if ((0..3).random(rand) == 2) {
                 liveData.postValue(
                     Error(IllegalStateException("что-то пошло не так"))
                 )
@@ -56,7 +57,4 @@ class WeatherListViewModel(private val liveData: MutableLiveData<AppState> = Mut
         return true
     }
 
-    override fun onCleared() { // TODO HW *** Пока не понял что тут делать
-        super.onCleared()
-    }
 }
