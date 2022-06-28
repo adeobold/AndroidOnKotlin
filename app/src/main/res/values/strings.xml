@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">AndroidOnKotlin</string>
-    <string name="txtInfoStartText">Здесь будет инфа об объектах тестового класса</string>
-    <string name="btnSetWeatherText">Изменить погоду в Москве</string>
-    <string name="btnFavoritesText">Создать список погоды</string>
+    <string name="temperature_label">Температура</string>
+    <string name="feels_like_label">Ощущается как</string>
+    <string name="city_coordinates">lt/ln: %s, %s"</string>
+    <string name="error">Error</string>
+    <string name="reload">Reload</string>
 </resources>

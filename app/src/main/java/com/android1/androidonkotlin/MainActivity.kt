@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.android1.androidonkotlin.databinding.ActivityMainBinding
 import com.android1.androidonkotlin.domain.WeatherItem
-import com.android1.androidonkotlin.view.WeatherListFragment
+import com.android1.androidonkotlin.view.weatherList.WeatherListFragment
 
 
 class MainActivity : AppCompatActivity() {

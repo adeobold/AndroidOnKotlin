@@ -1,7 +1,8 @@
-package com.android1.androidonkotlin.view
+package com.android1.androidonkotlin.view.weatherList
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.android1.androidonkotlin.model.Location
 import com.android1.androidonkotlin.model.Repository
 import com.android1.androidonkotlin.model.RepositoryLocalImpl
 import com.android1.androidonkotlin.model.RepositoryRemoteImpl
@@ -9,7 +10,7 @@ import com.android1.androidonkotlin.viewmodel.AppState
 import com.android1.androidonkotlin.viewmodel.AppState.Error
 import kotlin.random.Random
 
-class WeatherViewModel(private val liveData: MutableLiveData<AppState> = MutableLiveData<AppState>()) : ViewModel() {
+class WeatherListViewModel(private val liveData: MutableLiveData<AppState> = MutableLiveData<AppState>()) : ViewModel() {
 
     lateinit var repository: Repository
 
@@ -26,8 +27,15 @@ class WeatherViewModel(private val liveData: MutableLiveData<AppState> = Mutable
         }
     }
 
-    fun sentRequest() {
-        //choiceRepository()
+    fun getWeatherListForRussia(){
+        sentRequest(Location.Russian)
+    }
+    fun getWeatherListForWorld(){
+        sentRequest(Location.World)
+    }
+
+    fun sentRequest(location: Location) {
+
         liveData.value = AppState.Loading
 
         val rand = Random(System.nanoTime())
@@ -38,18 +46,9 @@ class WeatherViewModel(private val liveData: MutableLiveData<AppState> = Mutable
                     Error(IllegalStateException("что-то пошло не так"))
                 )
             } else {
-                liveData.postValue(
-                    AppState.Success(
-                        repository.getWeather(
-                            55.755826,
-                            37.617299900000035
-                        )
-                    )
-                )
+                liveData.postValue(AppState.SuccessMulti(repository.getListWeather(location)))
             }
         }.start()
-
-
 
     }
 
