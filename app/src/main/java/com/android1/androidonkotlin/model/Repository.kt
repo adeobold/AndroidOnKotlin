@@ -8,8 +8,3 @@ fun interface RepositoryOne {
 fun interface RepositoryMany {
     fun getListWeather(location:Location):List<WeatherItem>
 }
-
-sealed class Location{
-    object Russian:Location()
-    object World:Location()
-}

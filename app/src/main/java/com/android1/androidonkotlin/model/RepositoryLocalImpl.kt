@@ -1,6 +1,8 @@
 package com.android1.androidonkotlin.model
 
 import com.android1.androidonkotlin.domain.WeatherItem
+import com.android1.androidonkotlin.domain.getRussianCities
+import com.android1.androidonkotlin.domain.getWorldCities
 
 class RepositoryLocalImpl : RepositoryOne, RepositoryMany {
 
