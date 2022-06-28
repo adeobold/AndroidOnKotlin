@@ -5,28 +5,35 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.android1.androidonkotlin.databinding.WeatherFragmentBinding
 import com.android1.androidonkotlin.viewmodel.AppState
 
 
-class WeatherFragment : Fragment() {
+class WeatherListFragment : Fragment() {
 
     companion object {
-        fun newInstance() = WeatherFragment()
+        fun newInstance() = WeatherListFragment()
     }
 
     private lateinit var viewModel: WeatherViewModel
-    private lateinit var binding: WeatherFragmentBinding
 
+    private var _binding: WeatherFragmentBinding? = null
+    private val binding: WeatherFragmentBinding
+        get() {
+            return _binding!!
+        }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = WeatherFragmentBinding.inflate(inflater, container, false)
+        _binding = WeatherFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -37,8 +44,8 @@ class WeatherFragment : Fragment() {
         viewModel.sentRequest()
     }
 
-    private fun renderData(appState: AppState){
-        when (appState){
+    private fun renderData(appState: AppState) {
+        when (appState) {
             is AppState.Error -> {
                 binding.txtCity.text = "Произошла ошибка при загрузке"
             }

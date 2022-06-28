@@ -7,10 +7,9 @@ import com.android1.androidonkotlin.model.RepositoryLocalImpl
 import com.android1.androidonkotlin.model.RepositoryRemoteImpl
 import com.android1.androidonkotlin.viewmodel.AppState
 import com.android1.androidonkotlin.viewmodel.AppState.Error
-import java.lang.Thread.sleep
+import kotlin.random.Random
 
-class WeatherViewModel(private val liveData: MutableLiveData<AppState> = MutableLiveData<AppState>()) :
-    ViewModel() {
+class WeatherViewModel(private val liveData: MutableLiveData<AppState> = MutableLiveData<AppState>()) : ViewModel() {
 
     lateinit var repository: Repository
 
@@ -31,8 +30,10 @@ class WeatherViewModel(private val liveData: MutableLiveData<AppState> = Mutable
         //choiceRepository()
         liveData.value = AppState.Loading
 
+        val rand = Random(System.nanoTime())
+
         Thread {
-            if ((0..6).random() == 2) {
+            if ((0..6).random(rand) == 2) {
                 liveData.postValue(
                     Error(IllegalStateException("что-то пошло не так"))
                 )
