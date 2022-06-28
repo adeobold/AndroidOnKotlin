@@ -22,7 +22,6 @@ class WeatherListViewModel(private val liveData: MutableLiveData<AppState> = Mut
     private fun choiceRepository() {
         repository = if (isConnection()) {
             RepositoryRemoteImpl()
-            //RepositoryLocalImpl()
         } else {
             RepositoryLocalImpl()
         }

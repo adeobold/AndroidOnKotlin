@@ -64,15 +64,24 @@ class WeatherListFragment : Fragment(), OnItemClick {
     private fun renderData(appState: AppState) {
         when (appState) {
             is AppState.Error -> {
+                // когда выпадает этот вариант приложение отрабатывает правильно,
+                // и потом работает правильно, но в логе ошибка:
+                // E/RecyclerView: No adapter attached; skipping layout
+                // предполагаю, что для этих случает надо свой адаптер написать как с SuccessMulti
                 binding.process.text = "Произошла ошибка при загрузке"
             }
             AppState.Loading -> {
+                // когда выпадает этот вариант приложение отрабатывает правильно,
+                // и потом работает правильно, но в логе ошибка:
+                // E/RecyclerView: No adapter attached; skipping layout
+                // предполагаю, что для этих случает надо свой адаптер написать как с SuccessMulti
                 binding.process.text = "Идет загрузка..."
             }
             is AppState.SuccessOne -> {
-                val result = appState.weatherData
+                //val result = appState.weatherData
             }
             is AppState.SuccessMulti -> {
+                binding.process.text = "" // пока разбираюсь как отображать инфу о загрузке
                 binding.mainFragmentRecyclerView.adapter =
                     WeatherListAdapter(appState.weatherList, this)
             }
