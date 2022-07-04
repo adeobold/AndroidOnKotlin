@@ -34,26 +34,27 @@ class DetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val weather = (arguments?.getParcelable<WeatherItem>(BUNDLE_WEATHER_EXTRA))
-        if (weather != null) renderData(weather)
+        arguments?.let {
+            arg -> arg.getParcelable<WeatherItem>(BUNDLE_WEATHER_EXTRA)?.let { weather -> renderData(weather) }
+        }
     }
 
     @SuppressLint("SetTextI18n")
     private fun renderData(weather: WeatherItem) {
-        binding.cityName.text = weather.city?.name
-        binding.temperatureValue.text = weather.temperature.toString()
-        binding.feelsLikeValue.text = weather.pressure.toString()
-        binding.cityCoordinates.text = "${weather.city?.lat}/${weather.city?.lon}"
+        with(binding){
+            cityName.text = weather.city?.name
+            temperatureValue.text = weather.temperature.toString()
+            feelsLikeValue.text = weather.pressure.toString()
+            cityCoordinates.text = "${weather.city?.lat}/${weather.city?.lon}"
+        }
     }
 
     companion object {
         const val BUNDLE_WEATHER_EXTRA = "parcelWeather"
-        fun newInstance(weather: WeatherItem): DetailsFragment {
-            val bundle = Bundle()
-            bundle.putParcelable(BUNDLE_WEATHER_EXTRA, weather)
-            val fr = DetailsFragment()
-            fr.arguments = bundle
-            return fr
+        fun newInstance(weather: WeatherItem) = DetailsFragment().also { fr ->
+            fr.arguments = Bundle().apply {
+                putParcelable(BUNDLE_WEATHER_EXTRA, weather)
+            }
         }
     }
 

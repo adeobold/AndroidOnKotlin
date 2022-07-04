@@ -22,35 +22,6 @@ class MainActivity : AppCompatActivity() {
                 .replace(R.id.container,  WeatherListFragment.newInstance()).commit()
         }
 
-
-
-//        val txtInfo = findViewById<TextView>(R.id.txtInfo)
-//
-//        val itemMoscow = WeatherItem()
-//
-//        val itemMoscowCopy = itemMoscow.copy()
-//        Log.d("$$$", "Создали копию объекта класса WeatherItem ${itemMoscowCopy.city.name}")
-//
-//        findViewById<Button>(R.id.btnHello).setOnClickListener{
-//            Log.d("$$$", "Нажали на кнопку!")
-//            txtInfo.text = "Погода в городе ${itemMoscow.city.name}: ${itemMoscow.temperature} градусов, давление ${itemMoscow.pressure}"
-//        }
-//
-//        findViewById<Button>(R.id.btnSetWeather).setOnClickListener{
-//            txtInfo.text = "Измененная погода в городе ${itemMoscow.city.name}: ${itemMoscow.temperature} градусов, давление ${itemMoscow.pressure}"
-//        }
-//
-//        findViewById<Button>(R.id.btnFavorites).setOnClickListener{
-//
-//            FavoritesWeatherItems.addItem(itemMoscow)
-//
-//            Log.d("$$$", "${FavoritesWeatherItems.getItemCount()}")
-//            FavoritesWeatherItems.getList().forEach { Log.d("$$$", it.city.name)}
-//
-//        }
-
-
-
     }
 }
 
