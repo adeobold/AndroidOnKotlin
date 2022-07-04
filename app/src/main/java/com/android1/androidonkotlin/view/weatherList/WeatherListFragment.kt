@@ -12,11 +12,12 @@ import com.android1.androidonkotlin.domain.WeatherItem
 import com.android1.androidonkotlin.view.details.DetailsFragment
 import com.android1.androidonkotlin.view.details.OnItemClick
 import com.android1.androidonkotlin.viewmodel.AppState
+import com.google.android.material.snackbar.Snackbar
 
 
 class WeatherListFragment : Fragment(), OnItemClick {
 
-    var isLocal = true
+    private var isLocal = true
 
     companion object {
         fun newInstance() = WeatherListFragment()
@@ -48,7 +49,7 @@ class WeatherListFragment : Fragment(), OnItemClick {
         listViewModel = ViewModelProvider(this).get(WeatherListViewModel::class.java)
         listViewModel.getLiveData().observe(viewLifecycleOwner) { t -> renderData(t) }
 
-        binding.weatherListFragmentFAB.setOnClickListener() {
+        binding.weatherListFragmentFAB.setOnClickListener {
             isLocal = !isLocal
             if (isLocal) {
                 listViewModel.getWeatherListForRussia()
@@ -64,28 +65,50 @@ class WeatherListFragment : Fragment(), OnItemClick {
     private fun renderData(appState: AppState) {
         when (appState) {
             is AppState.Error -> {
-                // когда выпадает этот вариант приложение отрабатывает правильно,
-                // и потом работает правильно, но в логе ошибка:
-                // E/RecyclerView: No adapter attached; skipping layout
-                // предполагаю, что для этих случает надо свой адаптер написать как с SuccessMulti
-                binding.process.text = "Произошла ошибка при загрузке"
+                binding.showResult()
+                binding.root.showSnackBar(
+                    "Произошла ошибка загрузки",
+                    Snackbar.LENGTH_INDEFINITE,
+                    "Попробовать еще раз"
+                ) {
+                    if (isLocal) {
+                        listViewModel.getWeatherListForRussia()
+                    } else {
+                        listViewModel.getWeatherListForWorld()
+                    }
+                }
             }
             AppState.Loading -> {
-                // когда выпадает этот вариант приложение отрабатывает правильно,
-                // и потом работает правильно, но в логе ошибка:
-                // E/RecyclerView: No adapter attached; skipping layout
-                // предполагаю, что для этих случает надо свой адаптер написать как с SuccessMulti
-                binding.process.text = "Идет загрузка..."
+                binding.loading()
             }
             is AppState.SuccessOne -> {
-                //val result = appState.weatherData
+                binding.showResult()
             }
             is AppState.SuccessMulti -> {
-                binding.process.text = "" // пока разбираюсь как отображать инфу о загрузке
+                binding.showResult()
                 binding.mainFragmentRecyclerView.adapter =
                     WeatherListAdapter(appState.weatherList, this)
             }
         }
+    }
+
+    private fun View.showSnackBar(
+        string: String,
+        duration: Int,
+        actionString: String,
+        block: (v: View) -> Unit
+    ) {
+        Snackbar.make(this, string, duration).setAction(actionString, block).show()
+    }
+
+    private fun FragmentWeatherListBinding.loading() {
+        this.mainFragmentLoadingLayout.visibility = View.VISIBLE
+        this.weatherListFragmentFAB.visibility = View.GONE
+    }
+
+    private fun FragmentWeatherListBinding.showResult() {
+        this.mainFragmentLoadingLayout.visibility = View.GONE
+        this.weatherListFragmentFAB.visibility = View.VISIBLE
     }
 
     override fun onItemClick(weather: WeatherItem) {

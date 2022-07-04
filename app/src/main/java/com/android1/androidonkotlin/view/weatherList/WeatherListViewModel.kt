@@ -53,7 +53,7 @@ class WeatherListViewModel(private val liveData: MutableLiveData<AppState> = Mut
     }
 
     private fun isConnection(): Boolean {
-        return false
+        return true
     }
 
 }
