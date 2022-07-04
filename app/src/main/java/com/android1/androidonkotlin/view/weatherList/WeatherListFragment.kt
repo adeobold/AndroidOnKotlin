@@ -67,7 +67,7 @@ class WeatherListFragment : Fragment(), OnItemClick {
             is AppState.Error -> {
                 binding.showResult()
                 binding.root.showSnackBar(
-                    "Произошла ошибка загрузки",
+                    "Ошибка загрузки",
                     Snackbar.LENGTH_INDEFINITE,
                     "Попробовать еще раз"
                 ) {

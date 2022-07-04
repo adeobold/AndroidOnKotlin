@@ -11,11 +11,8 @@ class RepositoryRemoteImpl : Repository {
     }
 
     override fun getListWeather(location: Location): List<WeatherItem> {
-
         Thread.sleep(2000L)
-
         val result = mutableListOf<WeatherItem>()
-
         val cities = when (location) {
             Location.Russian -> {
                 getRussianCities()
@@ -27,7 +24,6 @@ class RepositoryRemoteImpl : Repository {
         for (i in cities.indices) {
             result.add(getWeather(cities[i].city!!.lat, cities[i].city!!.lon))
         }
-
         return result
     }
 
