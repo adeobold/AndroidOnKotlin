@@ -61,6 +61,7 @@ class DetailsFragment : Fragment() {
                 weatherLocal.humidity = weatherDTO.fact.humidity
                 weatherLocal.pressure = weatherDTO.fact.pressureMm
                 weatherLocal.wind = weatherDTO.fact.windSpeed
+                weatherLocal.feelsLike = weatherDTO.fact.feelsLike
             })
         }
     }
@@ -70,7 +71,7 @@ class DetailsFragment : Fragment() {
         with(binding) {
             cityName.text = weather.city?.name
             temperatureValue.text = weather.temperature.toString()
-            feelsLikeValue.text = weather.pressure.toString()
+            feelsLikeValue.text = weather.feelsLike.toString()
             cityCoordinates.text = "${weather.city?.lat}/${weather.city?.lon}"
         }
     }

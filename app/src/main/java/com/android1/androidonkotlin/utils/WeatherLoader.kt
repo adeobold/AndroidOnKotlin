@@ -1,5 +1,7 @@
 package com.android1.androidonkotlin.utils
 
+import android.os.Build
+import com.android1.androidonkotlin.BuildConfig
 import com.android1.androidonkotlin.model.dto.WeatherDTO
 import com.google.gson.Gson
 import java.io.BufferedReader
@@ -14,7 +16,7 @@ object WeatherLoader {
 
         myConnection = uri.openConnection() as HttpURLConnection
         myConnection.readTimeout = 5000
-        myConnection.addRequestProperty("X-Yandex-API-Key", "..")
+        myConnection.addRequestProperty("X-Yandex-API-Key", BuildConfig.WEATHER_API_KEY)
         Thread {
             val reader = BufferedReader(InputStreamReader(myConnection.inputStream))
             val weatherDTO = Gson().fromJson(getLines(reader), WeatherDTO::class.java)
