@@ -24,7 +24,15 @@
         
         <service android:name=".view.details.DetailsServiceIntent"
             android:exported="true" />
-        
+
+        <receiver android:name=".view.GlobalBroadcastReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.AIRPLANE_MODE" />
+            </intent-filter>
+        </receiver>
+
+
     </application>
 
 </manifest>

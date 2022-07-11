@@ -1,9 +1,13 @@
 package com.android1.androidonkotlin
 
+import android.content.Intent
+import android.content.IntentFilter
+import android.net.ConnectivityManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.android1.androidonkotlin.databinding.ActivityMainBinding
 import com.android1.androidonkotlin.domain.WeatherItem
+import com.android1.androidonkotlin.view.GlobalBroadcastReceiver
 import com.android1.androidonkotlin.view.weatherList.WeatherListFragment
 
 
@@ -11,8 +15,12 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
+    private val receiver = GlobalBroadcastReceiver()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        registerReceiver(receiver, IntentFilter(Intent.ACTION_AIRPLANE_MODE_CHANGED))
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -23,6 +31,12 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
+    override fun onDestroy() {
+        unregisterReceiver(receiver)
+        super.onDestroy()
+    }
+
 }
 
 
