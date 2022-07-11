@@ -28,9 +28,22 @@ class DetailsFragment : Fragment() {
             return _binding!!
         }
 
+    lateinit var weatherLocal: WeatherItem
+
+    val reciever = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            intent?.let {
+                it.getParcelableExtra<WeatherDTO>(BUNDLE_WEATHER_DTO_KEY)?.let { weatherDTO ->
+                    bindWeatherLocalWithWeatherDTO(weatherLocal, weatherDTO)
+                }
+            }
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(reciever)
     }
 
 
@@ -56,20 +69,10 @@ class DetailsFragment : Fragment() {
 //                    bindWeatherLocalWithWeatherDTO(weatherLocal, weatherDTO)
 //                }
 
+                this.weatherLocal = weatherLocal
+
                 LocalBroadcastManager.getInstance(requireContext()).registerReceiver(
-                    object : BroadcastReceiver() {
-                        override fun onReceive(context: Context?, intent: Intent?) {
-                            intent?.let {
-                                it.getParcelableExtra<WeatherDTO>(BUNDLE_WEATHER_DTO_KEY)
-                                    ?.let { weatherDTO ->
-                                        bindWeatherLocalWithWeatherDTO(
-                                            weatherLocal,
-                                            weatherDTO
-                                        )
-                                    }
-                            }
-                        }
-                    },
+                    reciever,
                     IntentFilter(WAVE_KEY)
                 )
 
@@ -85,7 +88,7 @@ class DetailsFragment : Fragment() {
         weatherLocal: WeatherItem,
         weatherDTO: WeatherDTO
     ) {
-        requireActivity().runOnUiThread {
+        //requireActivity().runOnUiThread {
             renderData(weatherLocal.apply {
                 weatherDTO.fact?.let { fact ->
                     weatherLocal.temperature = fact.temp
@@ -96,7 +99,7 @@ class DetailsFragment : Fragment() {
                 }
 
             })
-        }
+        //}
     }
 
     @SuppressLint("SetTextI18n")
