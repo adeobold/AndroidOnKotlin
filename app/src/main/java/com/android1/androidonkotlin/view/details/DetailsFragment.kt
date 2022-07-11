@@ -14,10 +14,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.android1.androidonkotlin.databinding.FragmentDetailsBinding
 import com.android1.androidonkotlin.domain.WeatherItem
 import com.android1.androidonkotlin.model.dto.WeatherDTO
-import com.android1.androidonkotlin.utils.BUNDLE_CITY_KEY
-import com.android1.androidonkotlin.utils.BUNDLE_WEATHER_DTO_KEY
-import com.android1.androidonkotlin.utils.WAVE_KEY
-import com.android1.androidonkotlin.utils.WeatherLoader
+import com.android1.androidonkotlin.utils.*
 
 class DetailsFragment : Fragment() {
 
@@ -43,6 +40,10 @@ class DetailsFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+        LocalBroadcastManager.getInstance(requireContext()).sendBroadcast(Intent().apply {
+            action = STOP_REQUEST_KEY
+        })
+        //requireActivity().stopService(Intent(requireContext(), DetailsServiceIntent::class.java))
         LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(reciever)
     }
 
