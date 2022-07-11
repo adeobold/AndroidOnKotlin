@@ -1,14 +1,22 @@
 package com.android1.androidonkotlin.view.details
 
 import android.annotation.SuppressLint
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.android1.androidonkotlin.databinding.FragmentDetailsBinding
 import com.android1.androidonkotlin.domain.WeatherItem
 import com.android1.androidonkotlin.model.dto.WeatherDTO
+import com.android1.androidonkotlin.utils.BUNDLE_CITY_KEY
+import com.android1.androidonkotlin.utils.BUNDLE_WEATHER_DTO_KEY
+import com.android1.androidonkotlin.utils.WAVE_KEY
 import com.android1.androidonkotlin.utils.WeatherLoader
 
 class DetailsFragment : Fragment() {
@@ -43,12 +51,34 @@ class DetailsFragment : Fragment() {
 
         weatherItem?.let { weatherLocal ->
             weatherLocal.city?.let { cityLocal ->
-                WeatherLoader.request(cityLocal.lat, cityLocal.lon) { weatherDTO ->
-                    bindWeatherLocalWithWeatherDTO(weatherLocal, weatherDTO)
-                }
+
+//                WeatherLoader.request(cityLocal.lat, cityLocal.lon) { weatherDTO ->
+//                    bindWeatherLocalWithWeatherDTO(weatherLocal, weatherDTO)
+//                }
+
+                LocalBroadcastManager.getInstance(requireContext()).registerReceiver(
+                    object : BroadcastReceiver() {
+                        override fun onReceive(context: Context?, intent: Intent?) {
+                            intent?.let {
+                                it.getParcelableExtra<WeatherDTO>(BUNDLE_WEATHER_DTO_KEY)
+                                    ?.let { weatherDTO ->
+                                        bindWeatherLocalWithWeatherDTO(
+                                            weatherLocal,
+                                            weatherDTO
+                                        )
+                                    }
+                            }
+                        }
+                    },
+                    IntentFilter(WAVE_KEY)
+                )
+
+                requireActivity().startService(Intent(requireContext(), DetailsServiceIntent::class.java).apply {
+                    putExtra(BUNDLE_CITY_KEY, cityLocal)
+                })
+
             }
         }
-
     }
 
     private fun bindWeatherLocalWithWeatherDTO(
@@ -57,11 +87,14 @@ class DetailsFragment : Fragment() {
     ) {
         requireActivity().runOnUiThread {
             renderData(weatherLocal.apply {
-                weatherLocal.temperature = weatherDTO.fact.temp
-                weatherLocal.humidity = weatherDTO.fact.humidity
-                weatherLocal.pressure = weatherDTO.fact.pressureMm
-                weatherLocal.wind = weatherDTO.fact.windSpeed
-                weatherLocal.feelsLike = weatherDTO.fact.feelsLike
+                weatherDTO.fact?.let { fact ->
+                    weatherLocal.temperature = fact.temp
+                    weatherLocal.humidity = fact.humidity
+                    weatherLocal.pressure = fact.pressureMm
+                    weatherLocal.wind = fact.windSpeed
+                    weatherLocal.feelsLike = fact.feelsLike
+                }
+
             })
         }
     }

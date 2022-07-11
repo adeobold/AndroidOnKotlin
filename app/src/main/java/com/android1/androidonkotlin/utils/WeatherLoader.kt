@@ -15,7 +15,7 @@ object WeatherLoader {
         val uri = URL("https://api.weather.yandex.ru/v2/informers?lat=${lat}&lon=${lon}")
         val myConnection: HttpsURLConnection?
         myConnection = uri.openConnection() as HttpsURLConnection
-        try{
+        try {
             myConnection.readTimeout = 5000
             myConnection.addRequestProperty(YANDEX_API_KEY, BuildConfig.WEATHER_API_KEY)
             Thread {
@@ -23,14 +23,10 @@ object WeatherLoader {
                 val weatherDTO = Gson().fromJson(getLines(reader), WeatherDTO::class.java)
                 block(weatherDTO)
             }.start()
-        }catch (e:Exception){
+        } catch (e: Exception) {
 
-        }finally {
+        } finally {
             myConnection.disconnect()
         }
-
-
-
-
     }
 }
