@@ -4,7 +4,8 @@ import com.android1.androidonkotlin.domain.WeatherItem
 import com.android1.androidonkotlin.domain.getDefaultCity
 
 class RepositoryDetailsRetrofitImpl: RepositoryDetails {
-    override fun getWeather(lat: Double, lon: Double): WeatherItem {
-        return WeatherItem(getDefaultCity())
+    override fun getWeather(lat: Double, lon: Double, callbackForAll: CallbackForAll) {
+
     }
+
 }
