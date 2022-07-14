@@ -13,9 +13,8 @@ import com.android1.androidonkotlin.domain.WeatherItem
 import com.android1.androidonkotlin.model.dto.WeatherDTO
 import com.android1.androidonkotlin.utils.*
 import com.google.gson.Gson
-import okhttp3.Call
-import okhttp3.OkHttpClient
-import okhttp3.Request
+import okhttp3.*
+import java.io.IOException
 
 class DetailsFragment : Fragment() {
 
@@ -57,29 +56,33 @@ class DetailsFragment : Fragment() {
                 builder.url("https://api.weather.yandex.ru/v2/informers?lat=${cityLocal.lat}&lon=${cityLocal.lon}")
                 val request: Request = builder.build()
                 val call: Call = client.newCall(request)
-                Thread {
-                    Log.d("@@@", "in thread")
-                    val response = call.execute()
-                    if (response.isSuccessful) {
-                        response.body?.let {
-                            val responseString = it.string()
-                            Log.d("@@@", responseString)
-                            val weatherDTO = Gson().fromJson(responseString, WeatherDTO::class.java)
-                            weatherLocal.temperature = weatherDTO.fact!!.temp
-                            weatherLocal.humidity = weatherDTO.fact.humidity
-                            weatherLocal.pressure = weatherDTO.fact.pressureMm
-                            weatherLocal.wind = weatherDTO.fact.windSpeed
-                            weatherLocal.feelsLike = weatherDTO.fact.feelsLike
-                        }
 
-                        requireActivity().runOnUiThread{
-                            renderData(weatherLocal)
-                        }
-                    } else {
-                        Log.d("@@@", "Проблема")
+                call.enqueue(object: Callback {
+                    override fun onFailure(call: Call, e: IOException) {
+                        Log.d("@@@", "Проблема до отправки на сервер")
                     }
-                }.start()
 
+                    override fun onResponse(call: Call, response: Response) {
+                        if (response.isSuccessful&&response.body!=null) {
+                            response.body?.let {
+                                val responseString = it.string()
+                                Log.d("@@@", responseString)
+                                val weatherDTO = Gson().fromJson(responseString, WeatherDTO::class.java)
+                                weatherLocal.temperature = weatherDTO.fact!!.temp
+                                weatherLocal.humidity = weatherDTO.fact.humidity
+                                weatherLocal.pressure = weatherDTO.fact.pressureMm
+                                weatherLocal.wind = weatherDTO.fact.windSpeed
+                                weatherLocal.feelsLike = weatherDTO.fact.feelsLike
+                            }
+                            requireActivity().runOnUiThread{
+                                renderData(weatherLocal)
+                            }
+                        } else {
+                            Log.d("@@@", "Проблема с ответом со стороны сервера")
+                        }
+                    }
+
+                })
 
             }
         }
