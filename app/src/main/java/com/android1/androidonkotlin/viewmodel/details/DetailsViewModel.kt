@@ -4,10 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.android1.androidonkotlin.model.*
 import com.android1.androidonkotlin.model.dto.WeatherDTO
-import com.android1.androidonkotlin.viewmodel.citieslist.CitiesListFragmentAppState
-import com.android1.androidonkotlin.viewmodel.citieslist.CitiesListFragmentAppState.Error
+import com.android1.androidonkotlin.model.retrofit.RepositoryDetailsRetrofitImpl
 import java.io.IOException
-import kotlin.random.Random
 
 class DetailsViewModel(private val liveData: MutableLiveData<DetailsFragmentAppState> = MutableLiveData<DetailsFragmentAppState>()) :
     ViewModel() {
@@ -20,7 +18,7 @@ class DetailsViewModel(private val liveData: MutableLiveData<DetailsFragmentAppS
     }
 
     private fun choiceRepository() {
-        repository = when (5) {
+        repository = when (2) {
             1 -> {
                 RepositoryDetailsOkHttpImpl()
             }
