@@ -11,19 +11,20 @@ import com.android1.androidonkotlin.databinding.FragmentWeatherListBinding
 import com.android1.androidonkotlin.domain.WeatherItem
 import com.android1.androidonkotlin.view.details.DetailsFragment
 import com.android1.androidonkotlin.view.details.OnItemClick
-import com.android1.androidonkotlin.viewmodel.AppState
+import com.android1.androidonkotlin.viewmodel.citieslist.CitiesListFragmentAppState
+import com.android1.androidonkotlin.viewmodel.citieslist.CitiesListViewModel
 import com.google.android.material.snackbar.Snackbar
 
 
-class WeatherListFragment : Fragment(), OnItemClick {
+class CitiesListFragment : Fragment(), OnItemClick {
 
     private var isLocal = true
 
     companion object {
-        fun newInstance() = WeatherListFragment()
+        fun newInstance() = CitiesListFragment()
     }
 
-    private lateinit var listViewModel: WeatherListViewModel
+    private lateinit var listViewModel: CitiesListViewModel
 
     private var _binding: FragmentWeatherListBinding? = null
     private val binding: FragmentWeatherListBinding
@@ -46,7 +47,7 @@ class WeatherListFragment : Fragment(), OnItemClick {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        listViewModel = ViewModelProvider(this).get(WeatherListViewModel::class.java)
+        listViewModel = ViewModelProvider(this).get(CitiesListViewModel::class.java)
         listViewModel.getLiveData().observe(viewLifecycleOwner) { t -> renderData(t) }
 
         binding.weatherListFragmentFAB.setOnClickListener {
@@ -62,9 +63,9 @@ class WeatherListFragment : Fragment(), OnItemClick {
         listViewModel.getWeatherListForRussia()
     }
 
-    private fun renderData(appState: AppState) {
-        when (appState) {
-            is AppState.Error -> {
+    private fun renderData(citiesListFragmentAppState: CitiesListFragmentAppState) {
+        when (citiesListFragmentAppState) {
+            is CitiesListFragmentAppState.Error -> {
                 binding.showResult()
                 binding.root.showSnackBar(
                     "Ошибка загрузки",
@@ -78,16 +79,16 @@ class WeatherListFragment : Fragment(), OnItemClick {
                     }
                 }
             }
-            AppState.Loading -> {
+            CitiesListFragmentAppState.Loading -> {
                 binding.loading()
             }
-            is AppState.SuccessOne -> {
+            is CitiesListFragmentAppState.SuccessOne -> {
                 binding.showResult()
             }
-            is AppState.SuccessMulti -> {
+            is CitiesListFragmentAppState.SuccessMulti -> {
                 binding.showResult()
                 binding.mainFragmentRecyclerView.adapter =
-                    WeatherListAdapter(appState.weatherList, this)
+                    DetailsListAdapter(citiesListFragmentAppState.weatherList, this)
             }
         }
     }

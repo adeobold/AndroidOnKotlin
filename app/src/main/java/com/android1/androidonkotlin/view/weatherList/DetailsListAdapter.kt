@@ -8,8 +8,8 @@ import com.android1.androidonkotlin.databinding.FragmentWeatherListRecyclerItemB
 import com.android1.androidonkotlin.domain.WeatherItem
 import com.android1.androidonkotlin.view.details.OnItemClick
 
-class WeatherListAdapter(private val dataList:List<WeatherItem>,private val callback: OnItemClick):
-    RecyclerView.Adapter<WeatherListAdapter.WeatherViewHolder>() {
+class DetailsListAdapter(private val dataList:List<WeatherItem>, private val callback: OnItemClick):
+    RecyclerView.Adapter<DetailsListAdapter.WeatherViewHolder>() {
 
     inner class WeatherViewHolder(view: View):RecyclerView.ViewHolder(view){
         fun bind(weather: WeatherItem){

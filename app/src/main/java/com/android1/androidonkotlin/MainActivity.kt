@@ -2,13 +2,12 @@ package com.android1.androidonkotlin
 
 import android.content.Intent
 import android.content.IntentFilter
-import android.net.ConnectivityManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.android1.androidonkotlin.databinding.ActivityMainBinding
 import com.android1.androidonkotlin.domain.WeatherItem
 import com.android1.androidonkotlin.view.GlobalBroadcastReceiver
-import com.android1.androidonkotlin.view.weatherList.WeatherListFragment
+import com.android1.androidonkotlin.view.weatherList.CitiesListFragment
 
 
 class MainActivity : AppCompatActivity() {
@@ -27,7 +26,7 @@ class MainActivity : AppCompatActivity() {
 
         if (savedInstanceState==null){
             supportFragmentManager.beginTransaction()
-                .replace(R.id.container,  WeatherListFragment.newInstance()).commit()
+                .replace(R.id.container,  CitiesListFragment.newInstance()).commit()
         }
 
     }
