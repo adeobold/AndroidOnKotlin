@@ -6,8 +6,6 @@ import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 
 data class Fact(
-    @SerializedName("condition")
-    val condition: String?,
     @SerializedName("feels_like")
     val feelsLike: Double,
     @SerializedName("pressure_mm")
@@ -20,7 +18,6 @@ data class Fact(
     val humidity: Double
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
-        parcel.readString(),
         parcel.readDouble(),
         parcel.readDouble(),
         parcel.readDouble(),
@@ -30,7 +27,6 @@ data class Fact(
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(condition)
         parcel.writeDouble(feelsLike)
         parcel.writeDouble(pressureMm)
         parcel.writeDouble(temp)
@@ -51,4 +47,5 @@ data class Fact(
             return arrayOfNulls(size)
         }
     }
+
 }

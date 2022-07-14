@@ -2,22 +2,15 @@ package com.android1.androidonkotlin.view.details
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.android1.androidonkotlin.BuildConfig
 import com.android1.androidonkotlin.databinding.FragmentDetailsBinding
 import com.android1.androidonkotlin.domain.WeatherItem
-import com.android1.androidonkotlin.model.dto.WeatherDTO
-import com.android1.androidonkotlin.utils.*
 import com.android1.androidonkotlin.viewmodel.details.DetailsFragmentAppState
 import com.android1.androidonkotlin.viewmodel.details.DetailsViewModel
-import com.google.gson.Gson
-import okhttp3.*
-import java.io.IOException
 
 class DetailsFragment : Fragment() {
 

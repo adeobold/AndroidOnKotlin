@@ -20,7 +20,7 @@ class DetailsViewModel(private val liveData: MutableLiveData<DetailsFragmentAppS
     }
 
     private fun choiceRepository() {
-        repository = when (3) {
+        repository = when (5) {
             1 -> {
                 RepositoryDetailsOkHttpImpl()
             }
