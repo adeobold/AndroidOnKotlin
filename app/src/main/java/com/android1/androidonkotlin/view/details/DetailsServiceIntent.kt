@@ -20,9 +20,12 @@ import javax.net.ssl.HttpsURLConnection
 
 class DetailsServiceIntent: IntentService("") {
 
+    private var bStopFlag = false
+
     private val reciever = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             Log.d("@@@"," onReceive ")
+            bStopFlag = true
         }
     }
 
@@ -37,6 +40,9 @@ class DetailsServiceIntent: IntentService("") {
             Log.d("@@@"," requestWeather ")
             requestWeather(intent)
             sleep(2000L)
+            if (bStopFlag) {
+                break
+            }
         }
     }
 

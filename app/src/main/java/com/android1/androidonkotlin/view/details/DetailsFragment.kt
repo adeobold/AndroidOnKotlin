@@ -43,7 +43,6 @@ class DetailsFragment : Fragment() {
         LocalBroadcastManager.getInstance(requireContext()).sendBroadcast(Intent().apply {
             action = STOP_REQUEST_KEY
         })
-        //requireActivity().stopService(Intent(requireContext(), DetailsServiceIntent::class.java))
         LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(reciever)
     }
 
