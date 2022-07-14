@@ -5,12 +5,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import coil.ImageLoader
+import coil.load
+import coil.request.ImageRequest
+import coil.decode.SvgDecoder
+import coil.transform.CircleCropTransformation
+import com.android1.androidonkotlin.R
 import com.android1.androidonkotlin.databinding.FragmentDetailsBinding
 import com.android1.androidonkotlin.domain.WeatherItem
 import com.android1.androidonkotlin.viewmodel.details.DetailsFragmentAppState
 import com.android1.androidonkotlin.viewmodel.details.DetailsViewModel
+import com.bumptech.glide.Glide
+import com.squareup.picasso.Picasso
 
 class DetailsFragment : Fragment() {
 
@@ -65,9 +74,35 @@ class DetailsFragment : Fragment() {
                     temperatureValue.text = weatherDTO.fact?.temp.toString()
                     feelsLikeValue.text = weatherDTO.fact?.feelsLike.toString()
                     cityCoordinates.text = "${weatherLocal.city?.lat}/${weatherLocal.city?.lon}"
+
+//                    Glide.with(this.root)
+//                        .load("https://freepngimg.com/thumb/city/36275-3-city-hd.png")
+//                        .into(icon)
+
+//                    Picasso.get().load("https://freepngimg.com/thumb/city/36275-3-city-hd.png")
+//                        .into(icon)
+
+                    icon.loadUrl("https://yastatic.net/weather/i/icons/funky/dark/${weatherDTO.fact?.icon}.svg")
+
                 }
             }
         }
+    }
+
+    private fun ImageView.loadUrl(url: String) {
+
+        val imageLoader = ImageLoader.Builder(this.context)
+            .componentRegistry{add(SvgDecoder(this@loadUrl.context))}
+            .build()
+
+        val request = ImageRequest.Builder(this.context)
+            .crossfade(true)
+            .crossfade(500)
+            .data(url)
+            .target(this)
+            .build()
+
+        imageLoader.enqueue(request)
     }
 
     companion object {

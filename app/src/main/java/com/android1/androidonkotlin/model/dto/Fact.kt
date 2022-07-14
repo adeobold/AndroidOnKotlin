@@ -15,7 +15,8 @@ data class Fact(
     @SerializedName("wind_speed")
     val windSpeed: Double,
     @SerializedName("humidity")
-    val humidity: Double
+    val humidity: Double,
+    val icon: String = "bkn_n"
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readDouble(),
