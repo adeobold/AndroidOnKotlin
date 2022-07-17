@@ -13,7 +13,7 @@ import java.io.InputStreamReader
 import java.net.URL
 import javax.net.ssl.HttpsURLConnection
 
-class RepositoryDetailsWeatherLoaderImpl : RepositoryDetails {
+class RepositoryWeatherLoaderImpl : RepositoryWeatherByCityLoadable {
     override fun getWeather(city: City, commonWeatherCallback: CommonWeatherCallback) {
         val uri = URL("https://api.weather.yandex.ru/v2/informers?lat=${city.lat}&lon=${city.lon}")
         val myConnection: HttpsURLConnection?

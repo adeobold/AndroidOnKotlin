@@ -3,7 +3,7 @@ package com.android1.androidonkotlin.model.retrofit
 import com.android1.androidonkotlin.BuildConfig
 import com.android1.androidonkotlin.domain.City
 import com.android1.androidonkotlin.model.CommonWeatherCallback
-import com.android1.androidonkotlin.model.RepositoryDetails
+import com.android1.androidonkotlin.model.RepositoryWeatherByCityLoadable
 import com.android1.androidonkotlin.model.dto.WeatherDTO
 import com.android1.androidonkotlin.utils.bindDTOWithCity
 import com.google.gson.GsonBuilder
@@ -14,7 +14,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
 
-class RepositoryDetailsRetrofitImpl: RepositoryDetails {
+class RepositoryRetrofitImpl: RepositoryWeatherByCityLoadable {
     override fun getWeather(city: City, commonWeatherCallback: CommonWeatherCallback) {
         val retrofitImpl = Retrofit.Builder()
         retrofitImpl.baseUrl("https://api.weather.yandex.ru")

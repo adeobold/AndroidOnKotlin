@@ -5,13 +5,14 @@ import androidx.lifecycle.ViewModel
 import com.android1.androidonkotlin.domain.City
 import com.android1.androidonkotlin.domain.WeatherItem
 import com.android1.androidonkotlin.model.*
-import com.android1.androidonkotlin.model.retrofit.RepositoryDetailsRetrofitImpl
+import com.android1.androidonkotlin.model.retrofit.RepositoryRetrofitImpl
 import java.io.IOException
 
 class DetailsViewModel(private val liveData: MutableLiveData<DetailsFragmentAppState> = MutableLiveData<DetailsFragmentAppState>()) :
     ViewModel() {
 
-    private lateinit var repository: RepositoryDetails
+    private lateinit var repositoryLoadable: RepositoryWeatherByCityLoadable
+    lateinit var repositoryWeatherSavable: RepositoryWeatherSavable
 
     fun getLiveData(): MutableLiveData<DetailsFragmentAppState> {
         choiceRepository()
@@ -21,40 +22,34 @@ class DetailsViewModel(private val liveData: MutableLiveData<DetailsFragmentAppS
     private fun choiceRepository() {
 
         if(isConnection()){
-            repository = when (2) {
+            repositoryLoadable = when (2) {
                 1 -> {
-                    RepositoryDetailsOkHttpImpl()
+                    RepositoryOkHttpImpl()
                 }
                 2 -> {
-                    RepositoryDetailsRetrofitImpl()
+                    RepositoryRetrofitImpl()
                 }
                 3 -> {
-                    RepositoryDetailsWeatherLoaderImpl()
+                    RepositoryWeatherLoaderImpl()
                 }
                 else -> {
-                    RepositoryDetailsLocalImpl()
+                    RepositoryLocalImpl()
                 }
             }
+            repositoryWeatherSavable = RepositoryRoomImpl()
         } else {
-//            repositoryLocationToOneWeather = when (1) {
-//                1 -> {
-//                    RepositoryRoomImpl()
-//                }
-//                2 -> {
-//                    RepositoryLocalImpl()
-//                }
-//                else -> {
-//                    RepositoryLocalImpl()
-//                }
-//            }
-//            repositoryWeatherAddable = when (0) {
-//                1 -> {
-//                    RepositoryRoomImpl()
-//                }
-//                else -> {
-//                    RepositoryRoomImpl()
-//                }
-//            }
+            repositoryLoadable = when (1) {
+                1 -> {
+                    RepositoryRoomImpl()
+                }
+                2 -> {
+                    RepositoryLocalImpl()
+                }
+                else -> {
+                    RepositoryLocalImpl()
+                }
+            }
+            repositoryWeatherSavable = RepositoryRoomImpl()
         }
 
 
@@ -63,7 +58,7 @@ class DetailsViewModel(private val liveData: MutableLiveData<DetailsFragmentAppS
     fun getWeather(city: City) {
         choiceRepository()
         liveData.value = DetailsFragmentAppState.Loading
-        repository.getWeather(city, callback)
+        repositoryLoadable.getWeather(city, callback)
     }
 
     private val callback = object : CommonWeatherCallback{

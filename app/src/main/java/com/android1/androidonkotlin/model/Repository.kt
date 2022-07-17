@@ -5,19 +5,15 @@ import com.android1.androidonkotlin.domain.WeatherItem
 import com.android1.androidonkotlin.model.dto.WeatherDTO
 import java.io.IOException
 
-fun interface RepositoryDetails {
+fun interface RepositoryWeatherByCityLoadable {
     fun getWeather(city: City, commonWeatherCallback: CommonWeatherCallback)
-}
-
-fun interface RepositoryWeatherByCity {
-    fun getWeather(city: City, callback: CommonWeatherCallback)
 }
 
 fun interface RepositoryWeatherAvailable {
     fun getWeatherAll(callback: CommonListWeatherCallback)
 }
 
-fun interface RepositoryWeatherSave {
+fun interface RepositoryWeatherSavable {
     fun addWeather(weather: WeatherItem)
 }
 

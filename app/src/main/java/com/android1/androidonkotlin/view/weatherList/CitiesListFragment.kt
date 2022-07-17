@@ -1,5 +1,6 @@
 package com.android1.androidonkotlin.view.weatherList
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.android1.androidonkotlin.R
 import com.android1.androidonkotlin.databinding.FragmentWeatherListBinding
 import com.android1.androidonkotlin.domain.WeatherItem
+import com.android1.androidonkotlin.utils.SP_DB_NAME_IS_RUSSIAN
+import com.android1.androidonkotlin.utils.SP_KEY_IS_RUSSIAN
 import com.android1.androidonkotlin.view.details.DetailsFragment
 import com.android1.androidonkotlin.view.details.OnItemClick
 import com.android1.androidonkotlin.viewmodel.citieslist.CitiesListFragmentAppState
@@ -48,19 +51,32 @@ class CitiesListFragment : Fragment(), OnItemClick {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         listViewModel = ViewModelProvider(this).get(CitiesListViewModel::class.java)
+
+        val sp = requireActivity().getSharedPreferences(SP_DB_NAME_IS_RUSSIAN, Context.MODE_PRIVATE)
+        isLocal = sp.getBoolean(SP_KEY_IS_RUSSIAN, true)
+        loadTownList()
+
         listViewModel.getLiveData().observe(viewLifecycleOwner) { t -> renderData(t) }
 
         binding.weatherListFragmentFAB.setOnClickListener {
             isLocal = !isLocal
-            if (isLocal) {
-                listViewModel.getWeatherListForRussia()
-                binding.weatherListFragmentFAB.setImageResource(R.drawable.ic_russia)
-            } else {
-                listViewModel.getWeatherListForWorld()
-                binding.weatherListFragmentFAB.setImageResource(R.drawable.ic_earth)
+            loadTownList()
+            sp.edit().apply {
+                putBoolean(SP_KEY_IS_RUSSIAN, isLocal)
+                apply()
             }
         }
-        listViewModel.getWeatherListForRussia()
+
+    }
+
+    private fun loadTownList() {
+        if (isLocal) {
+            listViewModel.getWeatherListForRussia()
+            binding.weatherListFragmentFAB.setImageResource(R.drawable.ic_russia)
+        } else {
+            listViewModel.getWeatherListForWorld()
+            binding.weatherListFragmentFAB.setImageResource(R.drawable.ic_earth)
+        }
     }
 
     private fun renderData(citiesListFragmentAppState: CitiesListFragmentAppState) {
@@ -72,11 +88,7 @@ class CitiesListFragment : Fragment(), OnItemClick {
                     Snackbar.LENGTH_INDEFINITE,
                     "Попробовать еще раз"
                 ) {
-                    if (isLocal) {
-                        listViewModel.getWeatherListForRussia()
-                    } else {
-                        listViewModel.getWeatherListForWorld()
-                    }
+                    loadTownList()
                 }
             }
             CitiesListFragmentAppState.Loading -> {
@@ -88,7 +100,7 @@ class CitiesListFragment : Fragment(), OnItemClick {
             is CitiesListFragmentAppState.SuccessMulti -> {
                 binding.showResult()
                 binding.mainFragmentRecyclerView.adapter =
-                    DetailsListAdapter(citiesListFragmentAppState.weatherList, this)
+                    CitiesListAdapter(citiesListFragmentAppState.weatherList, this)
             }
         }
     }

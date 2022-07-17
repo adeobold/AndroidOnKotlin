@@ -1,12 +1,16 @@
 package com.android1.androidonkotlin
 
+import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.android1.androidonkotlin.databinding.ActivityMainBinding
+import com.android1.androidonkotlin.utils.SP_DB_NAME_IS_RUSSIAN
+import com.android1.androidonkotlin.utils.SP_KEY_IS_RUSSIAN
 import com.android1.androidonkotlin.view.GlobalBroadcastReceiver
 import com.android1.androidonkotlin.view.weatherList.CitiesListFragment
 import com.android1.androidonkotlin.view.weatherHistory.WeatherHistoryListFragment
@@ -26,11 +30,10 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if (savedInstanceState==null){
+        if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.container,  CitiesListFragment.newInstance()).commit()
+                .replace(R.id.container, CitiesListFragment.newInstance()).commit()
         }
-
     }
 
     override fun onDestroy() {

@@ -5,7 +5,7 @@ import com.android1.androidonkotlin.domain.City
 import com.android1.androidonkotlin.domain.WeatherItem
 import com.android1.androidonkotlin.model.room.WeatherEntity
 
-class RepositoryRoomImpl:RepositoryWeatherByCity,RepositoryWeatherSave,RepositoryWeatherAvailable {
+class RepositoryRoomImpl:RepositoryWeatherByCityLoadable,RepositoryWeatherSavable,RepositoryWeatherAvailable {
     override fun getWeather(city: City, callback: CommonWeatherCallback) {
         callback.onResponse(WeatherApp.getWeatherDatabase().weatherDao().getWeatherByLocation(city.lat,city.lon).let{
             convertHistoryEntityToWeather(it).last()

@@ -9,7 +9,7 @@ import com.google.gson.Gson
 import okhttp3.*
 import java.io.IOException
 
-class RepositoryDetailsOkHttpImpl: RepositoryDetails {
+class RepositoryOkHttpImpl: RepositoryWeatherByCityLoadable {
     override fun getWeather(city: City, commonWeatherCallback: CommonWeatherCallback) {
         val client = OkHttpClient()
         val builder = Request.Builder()

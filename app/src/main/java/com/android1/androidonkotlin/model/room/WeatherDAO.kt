@@ -8,7 +8,7 @@ import androidx.room.Query
 @Dao
 interface WeatherDAO {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE) // FIXME создать конфликт
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertRoom(weatherEntity:WeatherEntity)
 
     @Query("INSERT INTO weather_entity_table (name,lat,lon,temperature,feelsLike) VALUES(:name,:lat,:lon,:temperature,:feelsLike)")
