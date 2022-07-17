@@ -10,11 +10,32 @@ class RepositoryRoomImpl : RepositoryWeatherByCityLoadable, RepositoryWeatherSav
     RepositoryWeatherAvailable {
 
     override fun getWeather(city: City, commonWeatherCallback: CommonWeatherCallback) {
-        commonWeatherCallback.onResponse(
+
+        var roomWeatherList =
             WeatherApp.getWeatherDatabase().weatherDao().getWeatherByLocation(city.lat, city.lon)
-                .let {
-                    convertHistoryEntityToWeather(it).last()
-                })
+        if (roomWeatherList.isEmpty()) {
+                        roomWeatherList = List(1) {
+                WeatherEntity(
+                    999,
+                    "Нет загруженных данных",
+                    city.lat,
+                    city.lon,
+                    -999.0,
+                    -999.0,
+                    -999.0,
+                    -999.0,
+                    -999.0
+                )
+            }
+        }
+
+        commonWeatherCallback.onResponse(convertHistoryEntityToWeather(roomWeatherList).last())
+
+//        commonWeatherCallback.onResponse(
+//            WeatherApp.getWeatherDatabase().weatherDao().getWeatherByLocation(city.lat, city.lon)
+//                .let {
+//                    convertHistoryEntityToWeather(it).last()
+//                })
     }
 
     override fun addWeather(weather: WeatherItem) {
@@ -34,7 +55,7 @@ class RepositoryRoomImpl : RepositoryWeatherByCityLoadable, RepositoryWeatherSav
     private fun convertHistoryEntityToWeather(entityList: List<WeatherEntity>): List<WeatherItem> {
         return entityList.map {
             WeatherItem(
-                City(it.name + " @@@", it.lat, it.lon),
+                City(it.name, it.lat, it.lon),
                 it.temperature,
                 it.pressure,
                 it.humidity,

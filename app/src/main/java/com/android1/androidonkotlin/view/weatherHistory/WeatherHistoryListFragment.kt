@@ -20,8 +20,6 @@ class WeatherHistoryListFragment: Fragment(), OnItemClick {
         fun newInstance() = WeatherHistoryListFragment()
     }
 
-    var isRussian = true
-
     private var _binding: FragmentWeatherHistoryListBinding? = null
     private val binding: FragmentWeatherHistoryListBinding
         get() {

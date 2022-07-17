@@ -45,8 +45,4 @@ class CitiesListViewModel(private val liveData: MutableLiveData<CitiesListFragme
 
     }
 
-    private fun isConnection(): Boolean {
-        return false
-    }
-
 }

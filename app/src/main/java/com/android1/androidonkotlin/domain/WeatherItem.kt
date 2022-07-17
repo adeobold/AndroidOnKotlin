@@ -42,6 +42,7 @@ data class WeatherItem(
 }
 
 data class City(val name: String?, val lat: Double, val lon: Double): Parcelable {
+
     constructor(parcel: Parcel) : this(
         parcel.readString(),
         parcel.readDouble(),
