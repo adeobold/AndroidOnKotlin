@@ -10,3 +10,5 @@ const val STOP_REQUEST_KEY = "STOP_REQUEST_KEY"
 const val ROOM_DB_NAME_WEATHER = "WEATHER_DB"
 const val SP_DB_NAME_IS_RUSSIAN = "IS_RUSSIAN"
 const val SP_KEY_IS_RUSSIAN = "IS_RUSSIAN"
+
+var isAirplaneModeOn = false

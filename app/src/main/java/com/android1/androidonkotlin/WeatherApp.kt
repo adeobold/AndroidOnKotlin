@@ -5,7 +5,7 @@ import androidx.room.Room
 import com.android1.androidonkotlin.model.room.WeatherDatabase
 import com.android1.androidonkotlin.utils.ROOM_DB_NAME_WEATHER
 
-class WeatherApp: Application() {
+class WeatherApp : Application() {
     override fun onCreate() {
         super.onCreate()
         WeatherApp = this
@@ -21,8 +21,7 @@ class WeatherApp: Application() {
                     getMyApp(),
                     WeatherDatabase::class.java,
                     ROOM_DB_NAME_WEATHER
-                ).allowMainThreadQueries() // TODO HW убрать allowMainThreadQueries
-                    .build()
+                ).build()
             }
             return weatherDatabase!!
         }

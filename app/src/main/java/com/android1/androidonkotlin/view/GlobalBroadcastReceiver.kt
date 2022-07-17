@@ -3,11 +3,11 @@ package com.android1.androidonkotlin.view
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.util.Log
+import com.android1.androidonkotlin.utils.isAirplaneModeOn
 
 class GlobalBroadcastReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
-        Log.d("@@@", "GlobalBroadcastReceiver")
+        isAirplaneModeOn = intent.getBooleanExtra("state", false)
     }
 
 }

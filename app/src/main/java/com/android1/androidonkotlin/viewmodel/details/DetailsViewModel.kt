@@ -1,11 +1,14 @@
 package com.android1.androidonkotlin.viewmodel.details
 
+import android.content.Context
+import android.provider.Settings
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.android1.androidonkotlin.domain.City
 import com.android1.androidonkotlin.domain.WeatherItem
 import com.android1.androidonkotlin.model.*
 import com.android1.androidonkotlin.model.retrofit.RepositoryRetrofitImpl
+import com.android1.androidonkotlin.utils.isAirplaneModeOn
 import java.io.IOException
 
 class DetailsViewModel(private val liveData: MutableLiveData<DetailsFragmentAppState> = MutableLiveData<DetailsFragmentAppState>()) :
@@ -57,13 +60,17 @@ class DetailsViewModel(private val liveData: MutableLiveData<DetailsFragmentAppS
     fun getWeather(city: City) {
         choiceRepository()
         liveData.value = DetailsFragmentAppState.Loading
-        repositoryLoadable.getWeather(city, callback)
+        Thread{
+            repositoryLoadable.getWeather(city, callback)
+        }.start()
     }
 
     private val callback = object : CommonWeatherCallback{
         override fun onResponse(weather: WeatherItem) {
             if (isConnection())
-                repositoryWeatherSavable.addWeather(weather)
+                Thread{
+                    repositoryWeatherSavable.addWeather(weather)
+                }.start()
             liveData.postValue(DetailsFragmentAppState.Success(weather))
         }
 
@@ -73,7 +80,8 @@ class DetailsViewModel(private val liveData: MutableLiveData<DetailsFragmentAppS
     }
 
     private fun isConnection(): Boolean {
-        return false
+        return !isAirplaneModeOn
     }
+
 
 }
