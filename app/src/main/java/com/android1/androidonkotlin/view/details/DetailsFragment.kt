@@ -54,7 +54,7 @@ class DetailsFragment : Fragment() {
         weatherItem?.let { weatherLocal ->
             this.weatherLocal = weatherLocal
             weatherLocal.city?.let { cityLocal ->
-                viewModel.getWeather(cityLocal.lat, cityLocal.lon)
+                viewModel.getWeather(cityLocal)
                 viewModel.getLiveData().observe(viewLifecycleOwner) {
                     renderData(it)
                 }
@@ -69,21 +69,12 @@ class DetailsFragment : Fragment() {
             is DetailsFragmentAppState.Loading -> {}
             is DetailsFragmentAppState.Success -> {
                 with(binding) {
-                    val weatherDTO = detailsFragmentAppState.weatherData
+                    val weatherItem = detailsFragmentAppState.weatherData
                     cityName.text = weatherLocal.city?.name
-                    temperatureValue.text = weatherDTO.fact?.temp.toString()
-                    feelsLikeValue.text = weatherDTO.fact?.feelsLike.toString()
+                    temperatureValue.text = weatherItem.temperature.toString()
+                    feelsLikeValue.text = weatherItem.feelsLike.toString()
                     cityCoordinates.text = "${weatherLocal.city?.lat}/${weatherLocal.city?.lon}"
-
-//                    Glide.with(this.root)
-//                        .load("https://freepngimg.com/thumb/city/36275-3-city-hd.png")
-//                        .into(icon)
-
-//                    Picasso.get().load("https://freepngimg.com/thumb/city/36275-3-city-hd.png")
-//                        .into(icon)
-
-                    icon.loadUrl("https://yastatic.net/weather/i/icons/funky/dark/${weatherDTO.fact?.icon}.svg")
-
+                    icon.loadUrl("https://yastatic.net/weather/i/icons/funky/dark/${weatherItem.icon}.svg")
                 }
             }
         }

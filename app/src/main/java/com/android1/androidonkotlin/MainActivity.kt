@@ -4,10 +4,12 @@ import android.content.Intent
 import android.content.IntentFilter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import com.android1.androidonkotlin.databinding.ActivityMainBinding
-import com.android1.androidonkotlin.domain.WeatherItem
 import com.android1.androidonkotlin.view.GlobalBroadcastReceiver
 import com.android1.androidonkotlin.view.weatherList.CitiesListFragment
+import com.android1.androidonkotlin.view.weatherHistory.WeatherHistoryListFragment
 
 
 class MainActivity : AppCompatActivity() {
@@ -36,24 +38,25 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
-}
-
-
-
-object FavoritesWeatherItems{
-
-    private val favorites = mutableListOf<WeatherItem>()
-
-    fun getItemCount(): Int {
-        return favorites.size
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return super.onCreateOptionsMenu(menu)
     }
 
-    fun addItem(item: WeatherItem){
-        favorites.add(item)
-    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_history -> {
+                supportFragmentManager.apply {
+                    beginTransaction()
+                        .replace(R.id.container, WeatherHistoryListFragment())
+                        .addToBackStack("")
+                        .commitAllowingStateLoss()
+                }
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
 
-    fun getList(): MutableList<WeatherItem> {
-        return favorites
     }
 
 }

@@ -5,14 +5,15 @@ import android.os.Parcelable
 
 data class WeatherItem(
     val city: City? = getDefaultCity(), var temperature: Double = 21.0,
-    var pressure: Double = 747.0, var humidity: Double = 20.0, var wind: Double = 5.0, var feelsLike: Double = 21.0): Parcelable {
+    var pressure: Double = 747.0, var humidity: Double = 20.0, var wind: Double = 5.0, var feelsLike: Double = 21.0, var icon: String? ="ovc_-ra"): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readParcelable(City::class.java.classLoader),
         parcel.readDouble(),
         parcel.readDouble(),
         parcel.readDouble(),
         parcel.readDouble(),
-        parcel.readDouble()
+        parcel.readDouble(),
+        parcel.readString()
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -22,6 +23,7 @@ data class WeatherItem(
         parcel.writeDouble(humidity)
         parcel.writeDouble(wind)
         parcel.writeDouble(feelsLike)
+        parcel.writeString(icon)
     }
 
     override fun describeContents(): Int {

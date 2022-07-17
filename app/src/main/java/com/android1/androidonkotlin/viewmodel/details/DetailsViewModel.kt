@@ -2,8 +2,9 @@ package com.android1.androidonkotlin.viewmodel.details
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.android1.androidonkotlin.domain.City
+import com.android1.androidonkotlin.domain.WeatherItem
 import com.android1.androidonkotlin.model.*
-import com.android1.androidonkotlin.model.dto.WeatherDTO
 import com.android1.androidonkotlin.model.retrofit.RepositoryDetailsRetrofitImpl
 import java.io.IOException
 
@@ -18,31 +19,56 @@ class DetailsViewModel(private val liveData: MutableLiveData<DetailsFragmentAppS
     }
 
     private fun choiceRepository() {
-        repository = when (2) {
-            1 -> {
-                RepositoryDetailsOkHttpImpl()
+
+        if(isConnection()){
+            repository = when (2) {
+                1 -> {
+                    RepositoryDetailsOkHttpImpl()
+                }
+                2 -> {
+                    RepositoryDetailsRetrofitImpl()
+                }
+                3 -> {
+                    RepositoryDetailsWeatherLoaderImpl()
+                }
+                else -> {
+                    RepositoryDetailsLocalImpl()
+                }
             }
-            2 -> {
-                RepositoryDetailsRetrofitImpl()
-            }
-            3 -> {
-                RepositoryDetailsWeatherLoaderImpl()
-            }
-            else -> {
-                RepositoryDetailsLocalImpl()
-            }
+        } else {
+//            repositoryLocationToOneWeather = when (1) {
+//                1 -> {
+//                    RepositoryRoomImpl()
+//                }
+//                2 -> {
+//                    RepositoryLocalImpl()
+//                }
+//                else -> {
+//                    RepositoryLocalImpl()
+//                }
+//            }
+//            repositoryWeatherAddable = when (0) {
+//                1 -> {
+//                    RepositoryRoomImpl()
+//                }
+//                else -> {
+//                    RepositoryRoomImpl()
+//                }
+//            }
         }
+
+
     }
 
-    fun getWeather(lat: Double, lon: Double) {
+    fun getWeather(city: City) {
         choiceRepository()
         liveData.value = DetailsFragmentAppState.Loading
-        repository.getWeather(lat, lon,callback)
+        repository.getWeather(city, callback)
     }
 
-    private val callback = object : CallbackForAll{
-        override fun onResponse(weatherDTO: WeatherDTO) {
-            liveData.postValue(DetailsFragmentAppState.Success(weatherDTO))
+    private val callback = object : CommonWeatherCallback{
+        override fun onResponse(weather: WeatherItem) {
+            liveData.postValue(DetailsFragmentAppState.Success(weather))
         }
 
         override fun onFailure(e: IOException) {
@@ -51,7 +77,7 @@ class DetailsViewModel(private val liveData: MutableLiveData<DetailsFragmentAppS
     }
 
     private fun isConnection(): Boolean {
-        return false
+        return true
     }
 
 }
