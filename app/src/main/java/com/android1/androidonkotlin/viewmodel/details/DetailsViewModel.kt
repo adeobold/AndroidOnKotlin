@@ -15,7 +15,6 @@ class DetailsViewModel(private val liveData: MutableLiveData<DetailsFragmentAppS
     lateinit var repositoryWeatherSavable: RepositoryWeatherSavable
 
     fun getLiveData(): MutableLiveData<DetailsFragmentAppState> {
-        choiceRepository()
         return liveData
     }
 
@@ -63,6 +62,8 @@ class DetailsViewModel(private val liveData: MutableLiveData<DetailsFragmentAppS
 
     private val callback = object : CommonWeatherCallback{
         override fun onResponse(weather: WeatherItem) {
+            if (isConnection())
+                repositoryWeatherSavable.addWeather(weather)
             liveData.postValue(DetailsFragmentAppState.Success(weather))
         }
 
@@ -72,7 +73,7 @@ class DetailsViewModel(private val liveData: MutableLiveData<DetailsFragmentAppS
     }
 
     private fun isConnection(): Boolean {
-        return true
+        return false
     }
 
 }

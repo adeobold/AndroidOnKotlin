@@ -6,6 +6,7 @@ import com.android1.androidonkotlin.domain.WeatherItem
 import com.android1.androidonkotlin.model.room.WeatherEntity
 
 class RepositoryRoomImpl:RepositoryWeatherByCityLoadable,RepositoryWeatherSavable,RepositoryWeatherAvailable {
+
     override fun getWeather(city: City, callback: CommonWeatherCallback) {
         callback.onResponse(WeatherApp.getWeatherDatabase().weatherDao().getWeatherByLocation(city.lat,city.lon).let{
             convertHistoryEntityToWeather(it).last()
@@ -26,7 +27,7 @@ class RepositoryRoomImpl:RepositoryWeatherByCityLoadable,RepositoryWeatherSavabl
 
     private fun convertHistoryEntityToWeather(entityList: List<WeatherEntity>): List<WeatherItem> {
         return entityList.map {
-            WeatherItem(City(it.name, it.lat, it.lon), it.temperature, it.pressure, it.humidity, it.wind, it.feelsLike)
+            WeatherItem(City(it.name + " @@@", it.lat, it.lon), it.temperature, it.pressure, it.humidity, it.wind, it.feelsLike)
         }
     }
     private fun convertWeatherToEntity(weather: WeatherItem): WeatherEntity? {

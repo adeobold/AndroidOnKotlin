@@ -11,7 +11,6 @@ class CitiesListViewModel(private val liveData: MutableLiveData<CitiesListFragme
     private lateinit var repositoryCitiesList: RepositoryCitiesList
 
     fun getLiveData(): MutableLiveData<CitiesListFragmentAppState> {
-        choiceRepository()
         return liveData
     }
 
@@ -27,6 +26,8 @@ class CitiesListViewModel(private val liveData: MutableLiveData<CitiesListFragme
     }
 
     private fun sentRequest(location: Location) {
+
+        choiceRepository()
 
         liveData.value = CitiesListFragmentAppState.Loading
 
