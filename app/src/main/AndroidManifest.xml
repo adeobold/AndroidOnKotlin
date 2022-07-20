@@ -24,8 +24,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
-        
+
+        <provider
+            android:name=".contentprovider.WeatherHistoryContentProvider"
+            android:authorities="@string/authorities"
+            android:enabled="true"
+            android:exported="true" />
+
+
+
         <service android:name=".view.details.DetailsServiceIntent"
             android:exported="true" />
 

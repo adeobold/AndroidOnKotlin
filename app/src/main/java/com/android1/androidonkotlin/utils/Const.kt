@@ -12,3 +12,7 @@ const val SP_DB_NAME_IS_RUSSIAN = "IS_RUSSIAN"
 const val SP_KEY_IS_RUSSIAN = "IS_RUSSIAN"
 
 var isAirplaneModeOn = false
+
+const val ID = "id"
+const val NAME = "name"
+const val TEMPERATURE = "temperature"
