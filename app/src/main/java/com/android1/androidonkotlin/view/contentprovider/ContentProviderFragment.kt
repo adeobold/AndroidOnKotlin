@@ -2,18 +2,25 @@ package com.android1.androidonkotlin.view.contentprovider
 
 import android.Manifest
 import android.content.ContentResolver
-import android.content.pm.PackageManager
+import android.content.Context
+import android.content.Intent
 import android.database.Cursor
+import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
-import android.util.Log
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.core.content.PermissionChecker
 import androidx.fragment.app.Fragment
+import com.android1.androidonkotlin.R
 import com.android1.androidonkotlin.databinding.FragmentContentProviderBinding
 
 class ContentProviderFragment : Fragment() {
@@ -41,72 +48,188 @@ class ContentProviderFragment : Fragment() {
     }
 
     private fun checkPermission() {
-        val permResult =
+        val resultRead =
             ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_CONTACTS)
-        PackageManager.PERMISSION_GRANTED
-        if (permResult == PackageManager.PERMISSION_GRANTED) {
+        val resultCall =
+            ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CALL_PHONE)
+        if (resultRead == PermissionChecker.PERMISSION_GRANTED && resultCall == PermissionChecker.PERMISSION_GRANTED) {
             getContacts()
-        } else if(shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)){
-            AlertDialog.Builder(requireContext())
-                .setTitle("Доступ к контактам")
-                .setMessage("Очень нужен доступ")
-                .setPositiveButton("Предоставить доступ") { _, _ ->
-                    permissionRequest(Manifest.permission.READ_CONTACTS)
-                }
-                .setNegativeButton("Не надо") { dialog, _ -> dialog.dismiss() }
-                .create()
-                .show()
         } else {
-            permissionRequest(Manifest.permission.READ_CONTACTS)
+            requestPermission()
         }
-
     }
 
-    private fun permissionRequest(permission: String) {
-        requestPermissions(arrayOf(permission), REQUEST_CODE_READ_CONTACTS)
+    private fun requestPermission() {
+        permissionLauncher.launch(
+            arrayOf(
+                Manifest.permission.READ_CONTACTS,
+                Manifest.permission.CALL_PHONE
+            )
+        )
     }
 
-    private val REQUEST_CODE_READ_CONTACTS = 999
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        if (requestCode == REQUEST_CODE_READ_CONTACTS) {
-            for (pIndex in permissions.indices) {
-                if (permissions[pIndex] == Manifest.permission.READ_CONTACTS
-                    && grantResults[pIndex] == PackageManager.PERMISSION_GRANTED
-                ) {
-                    getContacts()
-                    Log.d("@@@", "Ура")
-                }
+    private val permissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permitted ->
+        val read = permitted.getValue(Manifest.permission.READ_CONTACTS)
+        val call = permitted.getValue(Manifest.permission.CALL_PHONE)
+        when {
+            read && call -> {
+                getContacts()
+            }
+            !shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS) -> {
+                showGoSettings()
+            }
+            !shouldShowRequestPermissionRationale(Manifest.permission.CALL_PHONE) -> {
+                showGoSettings()
+            }
+            else -> {
+                showRatio()
             }
         }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
+
+    private fun showRatio() {
+        AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.need_permission_header))
+            .setMessage(getString(R.string.need_permission_text))
+            .setPositiveButton(getString(R.string.need_permission_give)) { _, _ ->
+                requestPermission()
+            }
+            .setNegativeButton(getString(R.string.need_permission_dont_give)) { dialog, _ ->
+                dialog.dismiss()
+                requireActivity().finish()
+            }
+            .create()
+            .show()
+    }
+
+    private fun showGoSettings() {
+        AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.need_permission_header))
+            .setMessage(
+                "${getString(R.string.need_permission_text)} \n" +
+                        getString(R.string.need_permission_text_again)
+            )
+            .setPositiveButton(getString(android.R.string.ok)) { _, _ ->
+                openApplicationSettings()
+            }
+            .setNegativeButton(getString(android.R.string.cancel)) { dialog, _ ->
+                dialog.dismiss()
+                requireActivity().finish()
+            }
+            .create()
+            .show()
+    }
+
+    private fun openApplicationSettings() {
+        val appSettingsIntent = Intent(
+            Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+            Uri.parse("package:${requireActivity().packageName}")
+        )
+        settingsLauncher.launch(appSettingsIntent)
+    }
+
+    private val settingsLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { checkPermission() }
 
     private fun getContacts() {
-        val contentResolver: ContentResolver = requireContext().contentResolver
-        // Отправляем запрос на получение контактов и получаем ответ в виде Cursor
-        val cursorWithContacts: Cursor? = contentResolver.query(
-            ContactsContract.Contacts.CONTENT_URI,
-            null,
-            null,
-            null,
-            ContactsContract.Contacts.DISPLAY_NAME + " ASC"
-        )
-        cursorWithContacts?.let { cursor->
-            for(i in 0 until cursor.count){ // аналог 0..cursorWithContacts.count-1
-                cursor.moveToPosition(i)
-                val name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
-                binding.containerForContacts.addView(TextView(requireContext()).apply {
-                    text = name
-                    textSize = 25f
-                })
+        context?.let { context: Context ->
+            val cr = context.contentResolver
+            val cursor = cr.query(
+                ContactsContract.Contacts.CONTENT_URI, null, null, null,
+                ContactsContract.Contacts.DISPLAY_NAME + " ASC"
+            )
+
+            cursor?.let { cursor: Cursor ->
+                for (i in 0..cursor.count) {
+                    if (cursor.moveToPosition(i)) {
+                        val name =
+                            cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
+                        val contactId =
+                            cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID))
+
+                        val view = TextView(context).apply {
+                            text = name
+                            textSize = 25f
+                        }
+                        view.setOnClickListener {
+                            getNumberFromID(cr, contactId)
+                        }
+                        binding.containerForContacts.addView(view)
+                    }
+                }
+                cursor.close()
             }
         }
-        cursorWithContacts?.close()
+    }
+
+    private fun getNumberFromID(cr: ContentResolver, contactId: String) {
+        val phones = cr.query(
+            ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
+            ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId, null, null
+        )
+        var number: String
+        var home: String? = null
+        var mobile: String? = null
+        var work: String? = null
+        var other: String? = null
+        phones?.let { cursor ->
+            while (cursor.moveToNext()) {
+                number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
+                when (cursor.getInt(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE))) {
+                    ContactsContract.CommonDataKinds.Phone.TYPE_HOME -> home = number
+                    ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE -> mobile = number
+                    ContactsContract.CommonDataKinds.Phone.TYPE_WORK -> work = number
+                    else -> other = number
+                }
+            }
+            phones.close()
+        }
+        showPhones(home, mobile, work, other)
+    }
+
+    private fun showPhones(
+        numberHome: String?,
+        numberMobile: String?,
+        numberWork: String?,
+        numberOther: String?
+    ) {
+        val linear = LinearLayout(requireContext())
+        linear.orientation = LinearLayout.VERTICAL
+        numberHome?.let { number ->
+            linear.addView(createButton(number, getString(R.string.home)))
+        }
+        numberMobile?.let { number ->
+            linear.addView(createButton(number, getString(R.string.mobile)))
+        }
+        numberWork?.let { number ->
+            linear.addView(createButton(number, getString(R.string.work)))
+        }
+        numberOther?.let { number ->
+            linear.addView(createButton(number, getString(R.string.other)))
+        }
+
+        AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.call))
+            .setView(linear)
+            .create()
+            .show()
+    }
+
+    private fun createButton(number: String, text: String): Button {
+        val button = Button(requireContext())
+        button.text = text
+        button.setOnClickListener {
+            makeCall(number)
+        }
+        return button
+    }
+
+    private fun makeCall(number: String) {
+        val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:$number"))
+        startActivity(intent)
     }
 
     override fun onDestroy() {

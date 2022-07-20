@@ -8,4 +8,14 @@
     <string name="weatherlistfragmentfab">weatherListFragmentFAB</string>
     <string name="history">История</string>
     <string name="content_provider">Контакты</string>
+    <string name="home">Домашний</string>
+    <string name="mobile">Мобильный</string>
+    <string name="work">Рабочий</string>
+    <string name="other">Другой</string>
+    <string name="call">Позвонить?</string>
+    <string name="need_permission_header">Разрешение</string>
+    <string name="need_permission_text">Необходим доступ к контактам и совершению звонков</string>
+    <string name="need_permission_give">Разрешить</string>
+    <string name="need_permission_dont_give">Запретить</string>
+    <string name="need_permission_text_again">Разрешить</string>
 </resources>
