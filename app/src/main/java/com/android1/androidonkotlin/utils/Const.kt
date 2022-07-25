@@ -16,3 +16,4 @@ var isAirplaneModeOn = false
 const val ID = "id"
 const val NAME = "name"
 const val TEMPERATURE = "temperature"
+const val REQUEST_CODE_LOCATION = 999

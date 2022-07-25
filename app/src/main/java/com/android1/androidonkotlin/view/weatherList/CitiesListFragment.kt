@@ -21,6 +21,7 @@ import com.android1.androidonkotlin.R
 import com.android1.androidonkotlin.databinding.FragmentWeatherListBinding
 import com.android1.androidonkotlin.domain.City
 import com.android1.androidonkotlin.domain.WeatherItem
+import com.android1.androidonkotlin.utils.REQUEST_CODE_LOCATION
 import com.android1.androidonkotlin.utils.SP_DB_NAME_IS_RUSSIAN
 import com.android1.androidonkotlin.utils.SP_KEY_IS_RUSSIAN
 import com.android1.androidonkotlin.view.details.DetailsFragment
@@ -37,6 +38,8 @@ import kotlin.system.measureTimeMillis
 class CitiesListFragment : Fragment(), OnItemClick {
 
     private var isLocal = true
+
+
 
     companion object {
         fun newInstance() = CitiesListFragment()
@@ -88,8 +91,6 @@ class CitiesListFragment : Fragment(), OnItemClick {
 
     }
 
-    private val REQUEST_CODE_LOCATION = 999
-
     private fun permissionRequest(permission: String) {
         requestPermissions(arrayOf(permission), REQUEST_CODE_LOCATION)
     }
@@ -97,13 +98,12 @@ class CitiesListFragment : Fragment(), OnItemClick {
     private fun checkPermission(permission: String) {
         val permResult =
             ContextCompat.checkSelfPermission(requireContext(), permission)
-        PackageManager.PERMISSION_GRANTED
         if (permResult == PackageManager.PERMISSION_GRANTED) {
             getLocation()
         } else if (shouldShowRequestPermissionRationale(permission)) {
             AlertDialog.Builder(requireContext())
                 .setTitle("Доступ к локации")
-                .setMessage("Объяснение Объяснение Объяснение Объяснение")
+                .setMessage("Для отображения погоды по текущему местоположению предоставьте доступ к геолокации")
                 .setPositiveButton("Предоставить доступ") { _, _ ->
                     permissionRequest(permission)
                 }
@@ -113,9 +113,9 @@ class CitiesListFragment : Fragment(), OnItemClick {
         } else {
             permissionRequest(permission)
         }
-
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -135,7 +135,6 @@ class CitiesListFragment : Fragment(), OnItemClick {
     }
 
     lateinit var locationManager: LocationManager
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     private fun getLocation() {
         if (ActivityCompat.checkSelfPermission(
@@ -147,7 +146,6 @@ class CitiesListFragment : Fragment(), OnItemClick {
                 requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
             if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                 val provider = locationManager.getProvider(LocationManager.GPS_PROVIDER)
-
                 locationManager.requestLocationUpdates(
                     LocationManager.GPS_PROVIDER,
                     0L,
