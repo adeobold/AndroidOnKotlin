@@ -19,4 +19,5 @@
     <string name="need_permission_dont_give">Запретить</string>
     <string name="need_permission_text_again">Разрешить</string>
     <string name="authorities">weather.history.provider</string>
+    <string name="maps">Карты</string>
 </resources>

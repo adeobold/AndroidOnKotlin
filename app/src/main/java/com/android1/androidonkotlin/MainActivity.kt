@@ -13,6 +13,7 @@ import com.android1.androidonkotlin.utils.SP_DB_NAME_IS_RUSSIAN
 import com.android1.androidonkotlin.utils.SP_KEY_IS_RUSSIAN
 import com.android1.androidonkotlin.view.GlobalBroadcastReceiver
 import com.android1.androidonkotlin.view.contentprovider.ContentProviderFragment
+import com.android1.androidonkotlin.view.maps.MapsFragment
 import com.android1.androidonkotlin.view.weatherList.CitiesListFragment
 import com.android1.androidonkotlin.view.weatherHistory.WeatherHistoryListFragment
 
@@ -62,6 +63,15 @@ class MainActivity : AppCompatActivity() {
                 supportFragmentManager.apply {
                     beginTransaction()
                         .replace(R.id.container, ContentProviderFragment())
+                        .addToBackStack("")
+                        .commitAllowingStateLoss()
+                }
+                true
+            }
+            R.id.menu_google_maps -> {
+                supportFragmentManager.apply {
+                    beginTransaction()
+                        .replace(R.id.container, MapsFragment())
                         .addToBackStack("")
                         .commitAllowingStateLoss()
                 }
