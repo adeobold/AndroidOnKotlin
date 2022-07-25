@@ -16,5 +16,5 @@ fun getLines(reader: BufferedReader): String {
 
 fun bindDTOWithCity(weatherDTO: WeatherDTO, city: City): WeatherItem {
     val fact: Fact = weatherDTO.fact!!
-    return (WeatherItem(city, fact.temp, fact.pressureMm, fact.humidity, fact.windSpeed, fact.feelsLike))
+    return (WeatherItem(city, fact.temp, fact.pressureMm, fact.humidity, fact.windSpeed, fact.feelsLike, fact.icon))
 }

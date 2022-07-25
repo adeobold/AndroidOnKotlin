@@ -14,16 +14,27 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/weatherListFragmentFABLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:src="@android:drawable/ic_dialog_map"
+        app:layout_constraintBottom_toTopOf="@+id/weatherListFragmentFABCities"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:maxImageSize="@dimen/max_size_fab"
+        android:contentDescription="@string/weatherlistfragmentfab"/>
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/weatherListFragmentFAB"
+        android:id="@+id/weatherListFragmentFABCities"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
         android:src="@drawable/ic_russia"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:maxImageSize="56dp"
+        app:maxImageSize="@dimen/max_size_fab"
         app:tint="@null"
         android:contentDescription="@string/weatherlistfragmentfab" />
 
