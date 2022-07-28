@@ -51,29 +51,48 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menu_history -> {
-                supportFragmentManager.apply {
-                    beginTransaction()
-                        .replace(R.id.container, WeatherHistoryListFragment())
-                        .addToBackStack("")
-                        .commitAllowingStateLoss()
+                val fragmentHistory =
+                    supportFragmentManager.findFragmentByTag("WeatherHistoryListFragment")
+                if (fragmentHistory == null) {
+                    supportFragmentManager.apply {
+                        beginTransaction()
+                            .replace(
+                                R.id.container,
+                                WeatherHistoryListFragment(),
+                                "WeatherHistoryListFragment"
+                            )
+                            .addToBackStack("")
+                            .commitAllowingStateLoss()
+                    }
                 }
                 true
             }
             R.id.menu_content_provider -> {
-                supportFragmentManager.apply {
-                    beginTransaction()
-                        .replace(R.id.container, ContentProviderFragment())
-                        .addToBackStack("")
-                        .commitAllowingStateLoss()
+                val fragmentContentProvider =
+                    supportFragmentManager.findFragmentByTag("ContentProviderFragment")
+                if (fragmentContentProvider == null) {
+                    supportFragmentManager.apply {
+                        beginTransaction()
+                            .replace(
+                                R.id.container,
+                                ContentProviderFragment(),
+                                "ContentProviderFragment"
+                            )
+                            .addToBackStack("")
+                            .commitAllowingStateLoss()
+                    }
                 }
                 true
             }
             R.id.menu_google_maps -> {
-                supportFragmentManager.apply {
-                    beginTransaction()
-                        .replace(R.id.container, MapsFragment())
-                        .addToBackStack("")
-                        .commitAllowingStateLoss()
+                val fragmentMaps = supportFragmentManager.findFragmentByTag("MapsFragment")
+                if (fragmentMaps == null) {
+                    supportFragmentManager.apply {
+                        beginTransaction()
+                            .replace(R.id.container, MapsFragment(), "MapsFragment")
+                            .addToBackStack("")
+                            .commitAllowingStateLoss()
+                    }
                 }
                 true
             }
