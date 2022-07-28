@@ -15,6 +15,18 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/weatherListFragmentFABPush"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:src="@drawable/ic_yandex_weather"
+
+        app:layout_constraintBottom_toTopOf="@+id/weatherListFragmentFABLocation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:maxImageSize="@dimen/max_size_fab"
+        android:contentDescription="@string/weatherlistfragmentfab"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/weatherListFragmentFABLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
