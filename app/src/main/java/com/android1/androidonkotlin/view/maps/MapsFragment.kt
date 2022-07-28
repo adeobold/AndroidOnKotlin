@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import com.android1.androidonkotlin.R
@@ -32,26 +33,21 @@ class MapsFragment : Fragment() {
         googleMap.addMarker(MarkerOptions().position(moscow).title("Marker in Moscow"))
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(moscow))
 
-
         googleMap.setOnMapLongClickListener { latLng ->
             addMarkerToArray(latLng)
             setMarker(latLng, "", R.drawable.ic_map_marker)
             drawLine()
         }
 
-
         googleMap.uiSettings.isZoomControlsEnabled = true
 
-        // TODO HW найти подвох
-        if (checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)){
+        if (checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)) {
             googleMap.isMyLocationEnabled = true
             googleMap.uiSettings.isMyLocationButtonEnabled = true
-        }else{
+        } else {
             googleMap.isMyLocationEnabled = false
             googleMap.uiSettings.isMyLocationButtonEnabled = false
         }
-
-
     }
 
     private fun permissionRequest(permission: String) {
@@ -94,7 +90,6 @@ class MapsFragment : Fragment() {
         return binding.root
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
@@ -104,23 +99,23 @@ class MapsFragment : Fragment() {
             binding.searchAddress.text.toString().let { searchText ->
                 val geocoder = Geocoder(requireContext())
                 geocoder.getFromLocationName(searchText, 1)?.let { addressList ->
-                    if (addressList.isNotEmpty()){
+                    if (addressList.isNotEmpty()) {
                         val ln = LatLng(addressList.first().latitude, addressList.first().longitude)
                         setMarker(ln, searchText, R.drawable.ic_map_marker)
                         map.moveCamera(CameraUpdateFactory.newLatLngZoom(ln, 15f))
+                    }else{
+                        Toast.makeText(requireContext(), "По данному адресу ничего не найдено!", Toast.LENGTH_LONG).show()
                     }
                 }
             }
         }
     }
 
-
     private val markers = mutableListOf<Marker>()
     private fun addMarkerToArray(location: LatLng) {
         val marker = setMarker(location, markers.size.toString(), R.drawable.ic_map_pin)
         markers.add(marker)
     }
-
 
     private fun drawLine() {
         val last: Int = markers.size - 1
@@ -135,7 +130,6 @@ class MapsFragment : Fragment() {
             )
         }
     }
-
 
     private fun setMarker(
         location: LatLng,
