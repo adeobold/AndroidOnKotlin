@@ -44,51 +44,7 @@ class MainActivity : AppCompatActivity() {
                 .replace(R.id.container, CitiesListFragment.newInstance()).commit()
         }
 
-       // pushNotification("Заголовок", "Текст сообщения")
-
     }
-
-
-    val CHANNEL_HIGH_ID = "1"
-    val NOTIFICATION_ID1 = 1
-
-    private fun pushNotification(title: String, body: String) {
-
-        val notificationManager =
-            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-        val intent = Intent(applicationContext, MainActivity::class.java).apply {
-
-        }
-
-        val pendingIntent = PendingIntent.getActivity(
-            applicationContext,
-            0,
-            intent,
-            PendingIntent.FLAG_IMMUTABLE
-        )
-
-        val notification = NotificationCompat.Builder(this, CHANNEL_HIGH_ID).apply {
-            setContentTitle(title)
-            setContentText(body)
-            setSmallIcon(R.drawable.ic_kotlin_logo)
-            setContentIntent(pendingIntent)
-            priority = NotificationCompat.PRIORITY_MAX
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channelHigh = NotificationChannel(
-                CHANNEL_HIGH_ID, CHANNEL_HIGH_ID,
-                NotificationManager.IMPORTANCE_HIGH
-            )
-            channelHigh.description = "Канал IMPORTANCE_HIGH"
-            notificationManager.createNotificationChannel(channelHigh)
-        }
-
-        notificationManager.notify(NOTIFICATION_ID1, notification.build())
-
-    }
-
 
     override fun onDestroy() {
         unregisterReceiver(receiver)
