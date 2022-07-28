@@ -1,28 +1,17 @@
 package com.android1.androidonkotlin
 
-import android.app.Activity
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
-import androidx.core.app.NotificationCompat
+import androidx.appcompat.app.AppCompatActivity
 import com.android1.androidonkotlin.databinding.ActivityMainBinding
-import com.android1.androidonkotlin.utils.SP_DB_NAME_IS_RUSSIAN
-import com.android1.androidonkotlin.utils.SP_KEY_IS_RUSSIAN
 import com.android1.androidonkotlin.view.GlobalBroadcastReceiver
 import com.android1.androidonkotlin.view.contentprovider.ContentProviderFragment
 import com.android1.androidonkotlin.view.maps.MapsFragment
-import com.android1.androidonkotlin.view.weatherList.CitiesListFragment
 import com.android1.androidonkotlin.view.weatherHistory.WeatherHistoryListFragment
+import com.android1.androidonkotlin.view.weatherList.CitiesListFragment
 
 
 class MainActivity : AppCompatActivity() {

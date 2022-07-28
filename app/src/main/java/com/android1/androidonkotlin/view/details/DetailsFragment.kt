@@ -9,17 +9,12 @@ import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import coil.ImageLoader
-import coil.load
-import coil.request.ImageRequest
 import coil.decode.SvgDecoder
-import coil.transform.CircleCropTransformation
-import com.android1.androidonkotlin.R
+import coil.request.ImageRequest
 import com.android1.androidonkotlin.databinding.FragmentDetailsBinding
 import com.android1.androidonkotlin.domain.WeatherItem
 import com.android1.androidonkotlin.viewmodel.details.DetailsFragmentAppState
 import com.android1.androidonkotlin.viewmodel.details.DetailsViewModel
-import com.bumptech.glide.Glide
-import com.squareup.picasso.Picasso
 
 class DetailsFragment : Fragment() {
 

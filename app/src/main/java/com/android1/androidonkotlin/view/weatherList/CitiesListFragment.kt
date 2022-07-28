@@ -1,7 +1,6 @@
 package com.android1.androidonkotlin.view.weatherList
 
 import android.Manifest
-import android.app.Activity
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -23,24 +22,17 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.android1.androidonkotlin.MainActivity
 import com.android1.androidonkotlin.R
 import com.android1.androidonkotlin.databinding.FragmentWeatherListBinding
 import com.android1.androidonkotlin.domain.City
 import com.android1.androidonkotlin.domain.WeatherItem
-import com.android1.androidonkotlin.utils.REQUEST_CODE_LOCATION
-import com.android1.androidonkotlin.utils.SP_DB_NAME_IS_RUSSIAN
-import com.android1.androidonkotlin.utils.SP_KEY_IS_RUSSIAN
+import com.android1.androidonkotlin.utils.*
 import com.android1.androidonkotlin.view.details.DetailsFragment
 import com.android1.androidonkotlin.view.details.OnItemClick
-import com.android1.androidonkotlin.view.weatherHistory.WeatherHistoryListFragment
 import com.android1.androidonkotlin.viewmodel.citieslist.CitiesListFragmentAppState
 import com.android1.androidonkotlin.viewmodel.citieslist.CitiesListViewModel
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
 import java.util.*
 import kotlin.system.measureTimeMillis
@@ -105,9 +97,6 @@ class CitiesListFragment : Fragment(), OnItemClick {
         }
 
     }
-
-    val CHANNEL_HIGH_ID = "1"
-    val NOTIFICATION_ID1 = 1
 
     private fun pushNotification(title: String, body: String) {
 

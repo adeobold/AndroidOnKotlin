@@ -1,7 +1,5 @@
 package com.android1.androidonkotlin.viewmodel.details
 
-import android.content.Context
-import android.provider.Settings
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.android1.androidonkotlin.domain.City

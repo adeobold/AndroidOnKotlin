@@ -4,8 +4,6 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Geocoder
-import androidx.fragment.app.Fragment
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,11 +11,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import com.android1.androidonkotlin.R
-import com.android1.androidonkotlin.databinding.FragmentMapsBinding
 import com.android1.androidonkotlin.databinding.FragmentMapsUiBinding
 import com.android1.androidonkotlin.utils.REQUEST_CODE_LOCATION
-
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback

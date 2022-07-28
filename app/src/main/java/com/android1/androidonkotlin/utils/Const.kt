@@ -17,3 +17,9 @@ const val ID = "id"
 const val NAME = "name"
 const val TEMPERATURE = "temperature"
 const val REQUEST_CODE_LOCATION = 999
+
+const val CHANNEL_HIGH_ID = "channelHigh"
+const val NOTIFICATION_ID1 = 1
+
+const val NOTIFICATION_KEY_TITLE = "myTitle"
+const val NOTIFICATION_KEY_BODY = "myBody"

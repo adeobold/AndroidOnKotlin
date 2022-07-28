@@ -4,7 +4,6 @@ import com.android1.androidonkotlin.WeatherApp
 import com.android1.androidonkotlin.domain.City
 import com.android1.androidonkotlin.domain.WeatherItem
 import com.android1.androidonkotlin.model.room.WeatherEntity
-import kotlin.concurrent.thread
 
 class RepositoryRoomImpl : RepositoryWeatherByCityLoadable, RepositoryWeatherSavable,
     RepositoryWeatherAvailable {

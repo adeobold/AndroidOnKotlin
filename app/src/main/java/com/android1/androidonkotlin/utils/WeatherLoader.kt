@@ -1,12 +1,10 @@
 package com.android1.androidonkotlin.utils
 
-import android.os.Build
 import com.android1.androidonkotlin.BuildConfig
 import com.android1.androidonkotlin.model.dto.WeatherDTO
 import com.google.gson.Gson
 import java.io.BufferedReader
 import java.io.InputStreamReader
-import java.net.HttpURLConnection
 import java.net.URL
 import javax.net.ssl.HttpsURLConnection
 

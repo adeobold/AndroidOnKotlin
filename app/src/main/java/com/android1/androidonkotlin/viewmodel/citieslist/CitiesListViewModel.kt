@@ -2,7 +2,9 @@ package com.android1.androidonkotlin.viewmodel.citieslist
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.android1.androidonkotlin.model.*
+import com.android1.androidonkotlin.model.Location
+import com.android1.androidonkotlin.model.RepositoryCitiesList
+import com.android1.androidonkotlin.model.RepositoryCitiesListImpl
 import com.android1.androidonkotlin.viewmodel.citieslist.CitiesListFragmentAppState.Error
 import kotlin.random.Random
 
