@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.android1.androidonkotlin.databinding.ActivityMainBinding
 import com.android1.androidonkotlin.view.GlobalBroadcastReceiver
 import com.android1.androidonkotlin.view.contentprovider.ContentProviderFragment
@@ -48,54 +49,42 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menu_history -> {
-                val fragmentHistory =
-                    supportFragmentManager.findFragmentByTag("WeatherHistoryListFragment")
-                if (fragmentHistory == null) {
-                    supportFragmentManager.apply {
-                        beginTransaction()
-                            .replace(
-                                R.id.container,
-                                WeatherHistoryListFragment(),
-                                "WeatherHistoryListFragment"
-                            )
-                            .addToBackStack("")
-                            .commitAllowingStateLoss()
-                    }
+                val tag = "WeatherHistoryListFragment"
+                if (supportFragmentManager.findFragmentByTag(tag) == null) {
+                    navigateTo(WeatherHistoryListFragment(), tag)
                 }
                 true
             }
             R.id.menu_content_provider -> {
-                val fragmentContentProvider =
-                    supportFragmentManager.findFragmentByTag("ContentProviderFragment")
-                if (fragmentContentProvider == null) {
-                    supportFragmentManager.apply {
-                        beginTransaction()
-                            .replace(
-                                R.id.container,
-                                ContentProviderFragment(),
-                                "ContentProviderFragment"
-                            )
-                            .addToBackStack("")
-                            .commitAllowingStateLoss()
-                    }
+                val tag = "ContentProviderFragment"
+                if (supportFragmentManager.findFragmentByTag(tag) == null) {
+                    navigateTo(ContentProviderFragment(), tag)
                 }
                 true
             }
             R.id.menu_google_maps -> {
-                val fragmentMaps = supportFragmentManager.findFragmentByTag("MapsFragment")
-                if (fragmentMaps == null) {
-                    supportFragmentManager.apply {
-                        beginTransaction()
-                            .replace(R.id.container, MapsFragment(), "MapsFragment")
-                            .addToBackStack("")
-                            .commitAllowingStateLoss()
-                    }
+                val tag = "MapsFragment"
+                if (supportFragmentManager.findFragmentByTag("MapsFragment") == null) {
+                    navigateTo(MapsFragment(), tag)
                 }
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
 
+    }
+
+    private fun navigateTo(fragment: Fragment, tag: String) {
+        supportFragmentManager.apply {
+            beginTransaction()
+                .replace(
+                    R.id.container,
+                    fragment,
+                    tag
+                )
+                .addToBackStack("")
+                .commitAllowingStateLoss()
+        }
     }
 
 }
